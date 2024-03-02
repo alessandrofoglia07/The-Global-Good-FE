@@ -1,0 +1,17 @@
+# 1st stage
+FROM node:18 as build
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# 2nd stage
+FROM nginx
+
+COPY --from=build /app/dist /usr/share/nginx/html

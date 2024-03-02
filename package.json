@@ -1,0 +1,45 @@
+{
+    "name": "create-modern-react-pwa",
+    "private": true,
+    "description": "Modern Vite React PWA",
+    "version": "1.0.0",
+    "type": "module",
+    "license": "MIT",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "docker-build:dev": "docker build -t create-modern-react-pwa-dev -f Dockerfile.dev .",
+        "docker-build:prod": "docker build -t create-modern-react-pwa-prod -f Dockerfile.prod .",
+        "docker-run:dev-win": "docker run -it --rm -p 3000:3000 --name create-modern-react-pwa -d -v %cd%/src:/app/src:ro -v %cd%/public:/app/public:ro -v %cd%/index.html:/app/index.html:ro create-modern-react-pwa-dev",
+        "docker-run:dev-linux": "docker run -it --rm -p 3000:3000 --name create-modern-react-pwa -d -v $(pwd)/src:/app/src:ro -v $(pwd)/public:/app/public:ro -v $(pwd)/index.html:/app/index.html:ro create-modern-react-pwa-dev",
+        "docker-run:prod": "docker run -it --rm -p 8080:80 --name create-modern-react-pwa -d create-modern-react-pwa-prod"
+    },
+    "dependencies": {
+        "@headlessui/react": "^1.7.18",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.21.3"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.48",
+        "@types/react-dom": "^18.2.18",
+        "@typescript-eslint/eslint-plugin": "^6.19.0",
+        "@typescript-eslint/parser": "^6.19.0",
+        "@vitejs/plugin-react": "^4.2.1",
+        "autoprefixer": "^10.4.17",
+        "eslint": "^8.56.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.5",
+        "postcss": "^8.4.33",
+        "prettier": "^3.2.4",
+        "prettier-plugin-tailwindcss": "^0.5.11",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5.3.3",
+        "vite": "^5.0.12",
+        "vite-plugin-pwa": "^0.17.4"
+    }
+}
