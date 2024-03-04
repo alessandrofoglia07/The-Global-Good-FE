@@ -12,4 +12,10 @@
         text-rendering: optimizeLegibility;
         font-synthesis: style;
     }
+
+    /* Temporary */
+    button {
+        background-color: #fff !important;
+        color: #1E1E20;
+    }
 }
