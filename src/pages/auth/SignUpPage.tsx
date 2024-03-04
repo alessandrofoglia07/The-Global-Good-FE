@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { CognitoUserAttribute, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { useNavigate } from 'react-router-dom';
+import userPool from '@/utils/userPool';
 
 interface Form {
     username: string;
@@ -24,20 +25,7 @@ const SignUpPage = () => {
     const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log('Sign up');
-
         const email = new CognitoUserAttribute({ Name: 'email', Value: form.email });
-
-        console.log(import.meta.env);
-
-        const UserPoolId = import.meta.env.VITE_AWS_USER_POOL_ID;
-        const ClientId = import.meta.env.VITE_AWS_POOL_CLIENT_ID;
-
-        if (!UserPoolId || !ClientId) {
-            throw new Error('UserPoolId and ClientId are required');
-        }
-
-        const userPool = new CognitoUserPool({ UserPoolId, ClientId });
 
         userPool.signUp(form.username, form.password, [email], [], (err?: Error) => {
             if (err) {

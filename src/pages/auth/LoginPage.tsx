@@ -1,6 +1,7 @@
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import React, { useState } from 'react';
+import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { useNavigate } from 'react-router-dom';
+import userPool from '@/utils/userPool';
 
 interface Form {
     username: string;
@@ -22,29 +23,18 @@ const LoginPage = () => {
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const cognitoUser = new CognitoUser({
+            Username: form.username,
+            Pool: userPool
+        });
+
         const authenticationDetails = new AuthenticationDetails({
             Username: form.username,
             Password: form.password
         });
 
-        const UserPoolId = import.meta.env.VITE_AWS_USER_POOL_ID;
-        const ClientId = import.meta.env.VITE_AWS_POOL_CLIENT_ID;
-
-        if (!UserPoolId || !ClientId) {
-            throw new Error('UserPoolId and ClientId are required');
-        }
-
-        const userPool = new CognitoUserPool({ UserPoolId, ClientId });
-
-        const userData = {
-            Username: form.username,
-            Pool: userPool
-        };
-
-        const cognitoUser = new CognitoUser(userData);
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: () => {
-                console.log('Success');
                 navigate('/');
             },
             onFailure: (err) => {

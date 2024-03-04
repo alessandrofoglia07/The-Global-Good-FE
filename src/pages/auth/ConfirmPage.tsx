@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import userPool from '@/utils/userPool';
 
 const ConfirmPage = () => {
     const [searchParams] = useSearchParams();
@@ -11,22 +12,11 @@ const ConfirmPage = () => {
     const handleConfirm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log('Confirm');
-
         const username = searchParams.get('username');
 
         if (!username) {
             return alert('Username is required');
         }
-
-        const UserPoolId = import.meta.env.VITE_AWS_USER_POOL_ID;
-        const ClientId = import.meta.env.VITE_AWS_POOL_CLIENT_ID;
-
-        if (!UserPoolId || !ClientId) {
-            throw new Error('UserPoolId and ClientId are required');
-        }
-
-        const userPool = new CognitoUserPool({ UserPoolId, ClientId });
 
         const cognitoUser = new CognitoUser({ Username: username, Pool: userPool });
 
@@ -43,20 +33,9 @@ const ConfirmPage = () => {
         e.preventDefault();
         const username = searchParams.get('username');
 
-        console.log('Resend');
-
         if (!username) {
             return alert('Username is required');
         }
-
-        const UserPoolId = import.meta.env.VITE_AWS_USER_POOL_ID;
-        const ClientId = import.meta.env.VITE_AWS_POOL_CLIENT_ID;
-
-        if (!UserPoolId || !ClientId) {
-            throw new Error('UserPoolId and ClientId are required');
-        }
-
-        const userPool = new CognitoUserPool({ UserPoolId, ClientId });
 
         const cognitoUser = new CognitoUser({ Username: username.toLowerCase(), Pool: userPool });
 
