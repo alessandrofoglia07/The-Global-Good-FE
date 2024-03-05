@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userPool from '@/utils/userPool';
+import { AccountContext } from '@/context/Account';
 
 interface Form {
     username: string;
@@ -10,6 +9,7 @@ interface Form {
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { authenticate } = useContext(AccountContext)!;
 
     const [form, setForm] = useState<Form>({
         username: '',
@@ -20,27 +20,16 @@ const LoginPage = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const cognitoUser = new CognitoUser({
-            Username: form.username,
-            Pool: userPool
-        });
-
-        const authenticationDetails = new AuthenticationDetails({
-            Username: form.username,
-            Password: form.password
-        });
-
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: () => {
-                navigate('/');
-            },
-            onFailure: (err) => {
-                alert(err);
-            }
-        });
+        try {
+            const data = await authenticate(form.username, form.password);
+            console.log('logged in', data);
+            navigate('/');
+        } catch (err) {
+            alert(err);
+        }
     };
 
     return (

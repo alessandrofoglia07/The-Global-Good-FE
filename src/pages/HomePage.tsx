@@ -1,3 +1,4 @@
+import Status from '@/components/Status';
 import React from 'react';
 
 const MainPage: React.FC = () => {
@@ -5,6 +6,7 @@ const MainPage: React.FC = () => {
         <div id='MainPage' className='flex w-full flex-col items-center *:py-4 *:font-bold *:underline'>
             <a href='/auth/signup'>Sign up page</a>
             <a href='/auth/login'>Login page</a>
+            <Status />
         </div>
     );
 };
