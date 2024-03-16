@@ -4,18 +4,10 @@
 
 @layer base {
     body {
-        background-color: #1E1E20;
-        color: #fff;
         width: 100%;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
         font-synthesis: style;
-    }
-
-    /* Temporary */
-    button {
-        background-color: #fff !important;
-        color: #1E1E20;
     }
 }
