@@ -7,7 +7,7 @@ const config = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans]
+                sans: ['Be Vietnam Pro', 'Inter', ...defaultTheme.fontFamily.sans]
             },
             screens: {
                 '-md': { max: '767px' },
