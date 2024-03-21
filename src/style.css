@@ -12,4 +12,8 @@
         text-rendering: optimizeLegibility;
         font-synthesis: style;
     }
+
+    .slick-dots {
+        position: relative;
+    }
 }

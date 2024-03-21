@@ -1,9 +1,27 @@
 import Navbar from '@/components/Navbar';
 import Status from '@/components/Status';
 import PeopleBg from '@/assets/imgs/landscape-people-1.jpg';
-import React from 'react';
+import React, { useState } from 'react';
+import useWindowSize from '@/hooks/useWindowSize';
+import Slider, { Settings } from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const MainPage: React.FC = () => {
+    const [bestSellers, setBestSellers] = useState(Array(9).fill(null));
+    const [windowWidth] = useWindowSize();
+
+    const settings: Settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: Math.floor(windowWidth / 300),
+        slidesToScroll: 1,
+        swipeToSlide: true,
+        touchThreshold: 10,
+        className: 'cursor-grab active:cursor-grabbing'
+    };
+
     return (
         <div id='MainPage' className='flex w-full flex-col items-center'>
             <Navbar />
@@ -15,15 +33,16 @@ const MainPage: React.FC = () => {
                     <button className='mt-12 rounded-lg bg-slate-100 px-8 py-4 text-2xl uppercase tracking-wider transition-colors hover:bg-slate-200'>Support us now</button>
                 </div>
             </section>
-            <section id='bestsellers' className='w-full bg-slate-50 py-4'>
-                <h1 className='relative left-1/2 w-fit -translate-x-1/2 py-8 text-4xl tracking-tight'>Our Best Sellers</h1>
-                <div className='flex w-full flex-wrap justify-evenly pb-4 *:aspect-square *:w-72 *:rounded-full *:bg-slate-500'>
-                    {/* TODO: Add products later */}
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            <section id='bestsellers' className='h-[35rem] w-full bg-slate-50 py-4'>
+                <h1 className='relative left-1/2 w-fit -translate-x-1/2 pb-8 pt-12 text-center text-4xl tracking-tight'>Our Best Sellers</h1>
+                <div className='w-full pb-12'>
+                    <Slider {...settings}>
+                        {bestSellers.map((_, i) => (
+                            <div key={i} className='p-4'>
+                                <div className='aspect-square rounded-full bg-slate-500' />
+                            </div>
+                        ))}
+                    </Slider>
                 </div>
             </section>
             <section id='values'>{/* TODO */}</section>
