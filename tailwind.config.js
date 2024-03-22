@@ -12,7 +12,12 @@ const config = {
             screens: {
                 '-md': { max: '767px' },
                 '-sm': { max: '639px' },
-                '-lg': { max: '1023px' }
+                '-lg': { max: '1023px' },
+                '-xs': { max: '400px' }
+            },
+            colors: {
+                tan: '#D2B48C',
+                taupe: '#483C32'
             }
         }
     },
