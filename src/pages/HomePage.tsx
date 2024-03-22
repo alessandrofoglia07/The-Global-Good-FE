@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Status from '@/components/Status';
 import PeopleBg from '@/assets/imgs/landscape-people-1.jpg';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useWindowSize from '@/hooks/useWindowSize';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -46,6 +46,14 @@ const MainPage: React.FC = () => {
     const [windowWidth] = useWindowSize();
 
     const slider = useRef<Slider>(null);
+
+    useEffect(() => {
+        const sliderNextInterval = setInterval(() => {
+            if (slider.current) slider.current.slickNext();
+        }, 4000);
+
+        return () => clearInterval(sliderNextInterval);
+    }, []);
 
     const settings: Settings = {
         infinite: true,
