@@ -17,6 +17,7 @@ const config = {
             },
             colors: {
                 tan: '#D2B48C',
+                darktan: '#C19A6B',
                 taupe: '#483C32'
             }
         }
