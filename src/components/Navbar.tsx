@@ -1,7 +1,22 @@
+import React, { useEffect, useState } from 'react';
 import Logo from './Logo';
 import { LuUser2 as UserIcon, LuSearch as SearchIcon, LuShoppingCart as CartIcon } from 'react-icons/lu';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
+    const [show, setShow] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    const controlNavbar = () => {
+        if (window.scrollY > lastScrollY && window.scrollY > 80) setShow(false);
+        else setShow(true);
+        setLastScrollY(window.scrollY);
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', controlNavbar);
+        return () => window.removeEventListener('scroll', controlNavbar);
+    }, [lastScrollY]);
+
     const handleSearch = () => {
         // TODO: implement search
         console.log('search');
@@ -13,7 +28,8 @@ const Navbar = () => {
     };
 
     return (
-        <nav className='flex h-20 w-full items-center justify-between'>
+        <nav
+            className={`fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between bg-zinc-100 transition-transform duration-300 ${show ? 'translate-y-0' : '-translate-y-20'}`}>
             <div id='left' className='px-4'>
                 <a href='/'>
                     <Logo />
