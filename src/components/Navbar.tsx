@@ -3,10 +3,14 @@ import Logo from './Logo';
 import { LuUser2 as UserIcon, LuSearch as SearchIcon, LuShoppingCart as CartIcon } from 'react-icons/lu';
 
 const Navbar: React.FC = () => {
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
 
     const controlNavbar = () => {
+        if (lastScrollY === 0) {
+            setShow(true);
+            return setLastScrollY(window.scrollY);
+        }
         if (window.scrollY > lastScrollY && window.scrollY > 80) setShow(false);
         else setShow(true);
         setLastScrollY(window.scrollY);
@@ -38,13 +42,13 @@ const Navbar: React.FC = () => {
             <div id='center' className='absolute left-1/2 flex h-20 -translate-x-1/2 items-center justify-center'></div>
             <div id='right' className='flex items-center gap-4 px-8'>
                 <a href='/account'>
-                    <UserIcon className='text-2xl' />
+                    <UserIcon className='text-2xl hover:text-taupe' />
                 </a>
                 <button onClick={handleSearch}>
-                    <SearchIcon className='text-2xl' />
+                    <SearchIcon className='text-2xl hover:text-taupe' />
                 </button>
                 <button onClick={handleCartOpen}>
-                    <CartIcon className='text-2xl' />
+                    <CartIcon className='text-2xl hover:text-taupe' />
                 </button>
             </div>
         </nav>
