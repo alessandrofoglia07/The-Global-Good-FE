@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { LuArrowRightCircle as RightArrowIcon, LuArrowLeftCircle as LeftArrowIcon } from 'react-icons/lu';
 import Footer from '@/components/Footer';
 import { values } from '@/assets/data/brandValues';
+import { motion } from 'framer-motion';
 
 const MainPage: React.FC = () => {
     const [bestSellers, setBestSellers] = useState(Array(9).fill(null));
@@ -77,30 +78,57 @@ const MainPage: React.FC = () => {
                 </div>
             </section>
             <section id='values' className='min-h-[40rem] w-full bg-tan pt-8 md:px-8'>
-                <h1 className='relative left-1/2 w-fit -translate-x-1/2 pb-8 pt-12 text-center text-5xl font-bold tracking-tighter text-taupe'>
+                <motion.h1
+                    initial={{ translateX: '-50%', scale: 1, opacity: 0 }}
+                    whileInView={{
+                        translateX: '-50%',
+                        scale: 1,
+                        opacity: 1,
+                        transition: { duration: 1, delay: 0.3 }
+                    }}
+                    viewport={{ once: true }}
+                    className='relative left-1/2 w-fit pb-8 pt-12 text-center text-5xl font-bold tracking-tighter text-taupe'>
                     Making a Positive Impact, One Purchase at a Time
-                </h1>
+                </motion.h1>
                 <div className='mb-8 grid h-full w-full gap-8 py-12 sm:grid-cols-1 sm:grid-rows-4 md:grid-cols-2 md:grid-rows-1 lg:my-8 lg:grid-cols-4 lg:grid-rows-1'>
                     {values.map((value, i) => (
-                        <div key={i} className='flex h-full w-full flex-col items-center px-2 text-center *:text-taupe'>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{
+                                opacity: 1,
+                                transition: { duration: 0.5, delay: 0.3 + i * 0.2 }
+                            }}
+                            viewport={{ once: true }}
+                            key={i}
+                            className='flex h-full w-full flex-col items-center px-2 text-center *:text-taupe'>
                             <value.icon className='text-6xl' />
                             <h3 className='my-4 text-2xl font-bold tracking-tight'>{value.title}</h3>
                             <p className='text-lg'>{value.description}</p>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </section>
             <section id='discover' className='flex aspect-[2/1] max-h-[50rem] w-full items-center bg-slate-50 -md:flex-col'>
                 <div className='grid h-full place-items-center md:w-1/2'>
                     <div className='p-16 lg:p-20 xl:p-32'>
-                        <h2 className='mb-6 text-4xl font-semibold tracking-tight text-taupe'>Shop at TheGlobalGood and support a more sustainable and equitable world.</h2>
-                        <h3 className='mb-12 text-xl'>
+                        <motion.h2
+                            initial={{ translateY: -50, opacity: 0.5 }}
+                            whileInView={{ translateY: 0, opacity: 1, transition: { duration: 0.8 } }}
+                            viewport={{ once: true }}
+                            className='mb-6 text-4xl font-semibold tracking-tight text-taupe'>
+                            Shop at TheGlobalGood and support a more sustainable and equitable world.
+                        </motion.h2>
+                        <motion.h3
+                            initial={{ opacity: 0.2 }}
+                            whileInView={{ opacity: 1, transition: { duration: 0.8, delay: 0.4 } }}
+                            viewport={{ once: true }}
+                            className='mb-12 text-xl'>
                             At TheGlobalGood, we believe in connecting you with products that are good for you and good for the planet. We partner with artisans and businesses around
                             the world who are committed to fair trade practices, sustainable production, and ethical labor.
-                        </h3>
+                        </motion.h3>
                         <a
                             href='/shop'
-                            className='hover:bg-darktan rounded-lg border border-taupe bg-tan px-8 py-4 text-xl font-semibold uppercase tracking-wider text-taupe transition-colors'>
+                            className='rounded-lg border border-taupe bg-tan px-8 py-4 text-xl font-semibold uppercase tracking-wider text-taupe transition-colors hover:bg-darktan'>
                             Visit our shop
                         </a>
                     </div>

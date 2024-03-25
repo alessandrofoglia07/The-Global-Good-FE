@@ -10,6 +10,7 @@ const Footer: React.FC = () => {
         console.log('Subscribed to newsletter with email:', email);
     };
 
+    // TODO: Make this responsive
     return (
         <footer className='grid w-full place-items-center bg-taupe pb-40 pt-20'>
             <div className='grid h-full grid-cols-5 px-[15%]'>
@@ -38,7 +39,7 @@ const Footer: React.FC = () => {
                         <h1 className='mt-2 text-2xl font-bold tracking-tight text-slate-100'>{section.title}</h1>
                         <ul className='mt-4'>
                             {section.links.map((link, j) => (
-                                <li key={j} className='mt-2'>
+                                <li key={j} className='mt-2 w-fit transition-transform duration-100 hover:translate-x-1'>
                                     <a href={link.href} className='flex items-center gap-2 text-slate-100 hover:text-slate-200'>
                                         {link.title}
                                     </a>
