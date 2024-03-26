@@ -1,8 +1,12 @@
 import React from 'react';
-import Logo from './Logo';
 import { footerSections } from '@/assets/data/footerSections';
+import FooterNewsletter from './FooterNewsletter';
+import useWindowSize from '@/hooks/useWindowSize';
+import Logo from './Logo';
 
 const Footer: React.FC = () => {
+    const [windowW] = useWindowSize();
+
     const handleSubscribeNewsletter = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const email = (e.currentTarget[0] as HTMLInputElement).value;
@@ -10,30 +14,10 @@ const Footer: React.FC = () => {
         console.log('Subscribed to newsletter with email:', email);
     };
 
-    // TODO: Make this responsive
     return (
         <footer className='grid w-full place-items-center bg-taupe pb-40 pt-20'>
-            <div className='grid h-full grid-cols-5 px-[15%]'>
-                <div className='col-span-2 border-r border-slate-100 px-16'>
-                    <Logo className='w-fit text-slate-100 transition-colors' />
-                    <form onSubmit={handleSubscribeNewsletter}>
-                        <h1 className='mt-6 text-2xl font-bold tracking-tight text-slate-100'>Stay in touch</h1>
-                        <h4 className='mt-3 text-sm text-slate-100'>Sign up to our newsletter and receive every news about our store and artisans we support.</h4>
-                        <div className='py-4'>
-                            <input
-                                type='email'
-                                placeholder='Email address'
-                                className='rounded-l-sm border-2 border-slate-100 bg-taupe px-4 py-2 text-white caret-white placeholder:text-slate-100/50 focus:outline-none'
-                            />
-                            <button type='submit' className='border-2 border-slate-100 bg-slate-100 px-4 py-2'>
-                                Submit
-                            </button>
-                        </div>
-                        <p className='text-sm text-slate-100/50'>
-                            By signing up to our newsletter you agree to our <a href='/pages/terms-conditions'>terms</a> and <a href='/pages/privacy-policy'>privacy policy</a>.
-                        </p>
-                    </form>
-                </div>
+            <div className='flex h-full w-full flex-col pl-[5%] lg:grid lg:grid-cols-5 lg:px-[15%] -lg:gap-8'>
+                {windowW > 1024 ? <FooterNewsletter onSubscribe={handleSubscribeNewsletter} /> : <Logo className='-mb-4 w-fit !text-3xl text-slate-100 *:!text-4xl' />}
                 {footerSections.map((section, i) => (
                     <div className='pl-8' key={i}>
                         <h1 className='mt-2 text-2xl font-bold tracking-tight text-slate-100'>{section.title}</h1>
@@ -48,6 +32,7 @@ const Footer: React.FC = () => {
                         </ul>
                     </div>
                 ))}
+                {windowW < 1024 && <FooterNewsletter onSubscribe={handleSubscribeNewsletter} />}
             </div>
         </footer>
     );
