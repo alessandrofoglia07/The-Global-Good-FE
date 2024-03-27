@@ -72,7 +72,7 @@ const ConfirmPage = () => {
                     className='absolute left-1/2 top-1/2 flex w-[30rem] max-w-[90vw] -translate-x-1/2 -translate-y-[calc(50%+5rem)] flex-col gap-4'
                     onSubmit={handleConfirm}>
                     <Logo className='mb-8 justify-center text-4xl text-taupe *:text-5xl' />
-                    <h2 className='relative mb-2 w-full select-none text-3xl font-bold tracking-tight text-taupe'>Sign in</h2>
+                    <h2 className='relative mb-2 w-full select-none text-3xl font-bold tracking-tight text-taupe'>Verify email</h2>
                     <input
                         name='code'
                         placeholder='Confirmation code'
