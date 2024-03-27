@@ -48,10 +48,10 @@ export const footerSections: FooterSection[] = [
     {
         title: 'Collections',
         links: [
-            { title: 'Clothing & Accessories', href: '/shop/collections/clothing-accessories' },
-            { title: 'Home & Living', href: '/shop/collections/home-living' },
-            { title: 'Beauty & Wellness', href: '/shop/collections/beauty-wellness' },
-            { title: 'Food & Beverages', href: '/shop/collections/food-beverages' }
+            { title: 'Clothing & Accessories', href: '/shop?collection=clothing-accessories' },
+            { title: 'Home & Living', href: '/shop?collection=home-living' },
+            { title: 'Beauty & Wellness', href: '/shop?collection=beauty-wellness' },
+            { title: 'Food & Beverages', href: '/shop?collection=food-beverages' }
         ]
     }
 ];
