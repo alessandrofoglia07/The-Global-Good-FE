@@ -6,14 +6,11 @@
 
 @layer base {
     body {
+        @apply bg-slate-100;
         width: 100%;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
         font-synthesis: style;
-    }
-
-    .slick-dots {
-        position: relative;
     }
 }
