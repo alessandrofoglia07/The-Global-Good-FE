@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { AccountContext } from '@/context/Account';
 
 const ProtectedRoutes: React.FC = () => {
-    const [isAuth, setIsAuth] = useState<boolean>(false);
+    const [isAuth, setIsAuth] = useState<boolean | null>(null);
     const { getSession } = useContext(AccountContext);
 
     useEffect(() => {
@@ -19,7 +19,9 @@ const ProtectedRoutes: React.FC = () => {
         checkAuth();
     }, [getSession]);
 
-    return isAuth ? <Outlet /> : <Navigate to='/auth/login' replace />;
+    if (isAuth === null) return null;
+
+    return isAuth ? <Outlet /> : <Navigate to='/account/login' replace />;
 };
 
 export default ProtectedRoutes;
