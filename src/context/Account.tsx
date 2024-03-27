@@ -1,9 +1,10 @@
 import { PropsWithChildren, createContext } from 'react';
 import userPool from '@/utils/userPool';
-import { AuthenticationDetails, CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserSession, ICognitoStorage } from 'amazon-cognito-identity-js';
+import { PasswordSchema } from '@/utils/schemas/authSchemas';
 
 type IAuthContext = {
-    authenticate: (Username: string, Password: string) => Promise<CognitoUserSession>;
+    authenticate: (Username: string, Password: string, Storage: ICognitoStorage) => Promise<CognitoUserSession>;
     getSession: () => Promise<CognitoUserSession | null>;
     logout: () => void;
 };
@@ -23,16 +24,24 @@ const Account = ({ children }: PropsWithChildren) => {
         });
     };
 
-    const authenticate = async (Username: string, Password: string) => {
+    const authenticate = async (Username: string, Password: string, Storage: ICognitoStorage = localStorage) => {
         return await new Promise<CognitoUserSession>((resolve, reject) => {
-            const cognitoUser = new CognitoUser({ Username, Pool: userPool });
+            const validate = PasswordSchema.safeParse(Password);
 
-            const authenticationDetails = new AuthenticationDetails({ Username, Password });
+            if (!Username || !Password) {
+                reject('Please fill in all fields.');
+            } else if (!validate.success) {
+                reject(validate.error.errors[0]?.message);
+            } else {
+                const cognitoUser = new CognitoUser({ Username, Pool: userPool, Storage });
 
-            cognitoUser.authenticateUser(authenticationDetails, {
-                onSuccess: (data) => resolve(data),
-                onFailure: (err) => reject(err)
-            });
+                const authenticationDetails = new AuthenticationDetails({ Username, Password });
+
+                cognitoUser.authenticateUser(authenticationDetails, {
+                    onSuccess: (data) => resolve(data),
+                    onFailure: (err) => reject(err)
+                });
+            }
         });
     };
 
