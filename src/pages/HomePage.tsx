@@ -57,7 +57,7 @@ const MainPage: React.FC = () => {
                     </a>
                 </div>
             </section>
-            <section id='bestsellers' className='w-full bg-slate-50 py-4'>
+            <section id='bestsellers' className='w-full py-4'>
                 <div className='flex w-full items-center justify-between px-12 pb-8 pt-12 -xs:pb-20'>
                     <button onClick={() => sliderMove('prev')}>
                         <LeftArrowIcon className='text-3xl text-taupe' />
@@ -108,7 +108,7 @@ const MainPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <section id='discover' className='flex aspect-[2/1] max-h-[50rem] w-full items-center bg-slate-50 -md:flex-col'>
+            <section id='discover' className='flex aspect-[2/1] max-h-[50rem] w-full items-center -md:flex-col'>
                 <div className='grid h-full place-items-center md:w-1/2'>
                     <div className='p-16 lg:p-20 xl:p-32'>
                         <motion.h2

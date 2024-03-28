@@ -7,6 +7,7 @@ import Logo from '@/components/Logo';
 import { LuEye as ShowPassIcon, LuEyeOff as HidePassIcon } from 'react-icons/lu';
 import { UsernameSchema, EmailSchema, PasswordSchema } from '@/utils/schemas/authSchemas';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
+import useRedirectToAccount from '@/hooks/useRedirectToAccount';
 
 interface Form {
     username: string;
@@ -16,6 +17,7 @@ interface Form {
 
 const RegisterPage = () => {
     const navigate = useNavigate();
+    useRedirectToAccount();
 
     const [form, setForm] = useState<Form>({
         username: '',
@@ -68,7 +70,7 @@ const RegisterPage = () => {
 
         userPool.signUp(form.username, form.password, [email], [], (err?: Error) => {
             if (err) {
-                setErr((prev) => ({ ...prev, password: err.message }));
+                setErr((prev) => ({ ...prev, password: formatErrMsg(err.message) }));
             } else {
                 navigate(`/account/confirm?username=${form.username}`);
             }

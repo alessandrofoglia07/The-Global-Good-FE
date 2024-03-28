@@ -5,10 +5,12 @@ import userPool from '@/utils/userPool';
 import Logo from '@/components/Logo';
 import Navbar from '@/components/Navbar';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
+import useRedirectToAccount from '@/hooks/useRedirectToAccount';
 
 const ConfirmPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    useRedirectToAccount();
 
     const [errMsg, setErrMsg] = useState<string | null>(null);
     const [resendCodeMsg, setResendCodeMsg] = useState<string | null>(null);
@@ -33,7 +35,7 @@ const ConfirmPage = () => {
                 setErrMsg(formatErrMsg(err.message));
             } else {
                 setErrMsg(null);
-                navigate('/account/login');
+                navigate('/account/signin');
             }
         });
     };

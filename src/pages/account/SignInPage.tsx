@@ -5,21 +5,23 @@ import Navbar from '@/components/Navbar';
 import Logo from '@/components/Logo';
 import { LuEye as ShowPassIcon, LuEyeOff as HidePassIcon } from 'react-icons/lu';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
+import useRedirectToAccount from '@/hooks/useRedirectToAccount';
 
 interface Form {
-    username: string;
+    usernameOrEmail: string;
     password: string;
     rememberMe: boolean;
 }
 
 const SignInPage = () => {
     const navigate = useNavigate();
-    const { authenticate } = useContext(AccountContext)!;
+    const { authenticate } = useContext(AccountContext);
+    useRedirectToAccount();
 
     const [showPass, setShowPass] = useState<boolean>(false);
     const [errMsg, setErrMsg] = useState<string>('');
     const [form, setForm] = useState<Form>({
-        username: '',
+        usernameOrEmail: '',
         password: '',
         rememberMe: true
     });
@@ -32,7 +34,7 @@ const SignInPage = () => {
         e.preventDefault();
 
         try {
-            await authenticate(form.username, form.password, form.rememberMe ? localStorage : sessionStorage);
+            await authenticate(form.usernameOrEmail, form.password, form.rememberMe ? localStorage : sessionStorage);
             navigate('/');
         } catch (err) {
             if (err instanceof Error) setErrMsg(formatErrMsg(err.message));
@@ -54,11 +56,11 @@ const SignInPage = () => {
                     <Logo className='mb-8 justify-center text-4xl text-taupe *:text-5xl' />
                     <h2 className='relative mb-2 w-full select-none text-3xl font-bold tracking-tight text-taupe'>Sign in</h2>
                     <input
-                        name='username'
-                        placeholder='Username'
+                        name='usernameOrEmail'
+                        placeholder='Username or Email'
                         className='w-full rounded-md border border-gray-300 px-6 py-3 text-xl text-taupe outline-tan'
                         onChange={handleChange}
-                        value={form.username}
+                        value={form.usernameOrEmail}
                         autoFocus
                     />
                     <div className='flex w-full items-center rounded-md border border-gray-300 bg-white py-3 pl-6 pr-1 text-xl text-taupe outline-1 focus-within:outline focus-within:outline-tan'>

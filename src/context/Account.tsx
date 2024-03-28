@@ -24,18 +24,18 @@ const Account = ({ children }: PropsWithChildren) => {
         });
     };
 
-    const authenticate = async (Username: string, Password: string, Storage: ICognitoStorage = localStorage) => {
+    const authenticate = async (UsernameOrEmail: string, Password: string, Storage: ICognitoStorage = localStorage) => {
         return await new Promise<CognitoUserSession>((resolve, reject) => {
             const validate = PasswordSchema.safeParse(Password);
 
-            if (!Username || !Password) {
+            if (!UsernameOrEmail || !Password) {
                 reject('Please fill in all fields.');
             } else if (!validate.success) {
                 reject(validate.error.errors[0]?.message);
             } else {
-                const cognitoUser = new CognitoUser({ Username, Pool: userPool, Storage });
+                const cognitoUser = new CognitoUser({ Username: UsernameOrEmail, Pool: userPool, Storage });
 
-                const authenticationDetails = new AuthenticationDetails({ Username, Password });
+                const authenticationDetails = new AuthenticationDetails({ Username: UsernameOrEmail, Password });
 
                 cognitoUser.authenticateUser(authenticationDetails, {
                     onSuccess: (data) => resolve(data),
