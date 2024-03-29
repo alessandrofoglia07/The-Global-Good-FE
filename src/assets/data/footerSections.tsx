@@ -10,10 +10,10 @@ export const footerSections: FooterSection[] = [
     {
         title: 'Company',
         links: [
-            { title: 'About us', href: '/pages/about-us' },
+            { title: 'About us', href: '/info/about-us' },
             { title: 'Shop', href: '/shop' },
-            { title: 'Privacy Policy', href: '/pages/privacy-policy' },
-            { title: 'Terms & Conditions', href: '/pages/terms-conditions' }
+            { title: 'Privacy Policy', href: '/info/privacy-policy' },
+            { title: 'Terms & Conditions', href: '/info/terms-conditions' }
         ]
     },
     {

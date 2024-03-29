@@ -5,6 +5,9 @@ import SignInPage from '@/pages/account/SignInPage';
 import RegisterPage from '@/pages/account/RegisterPage';
 import ConfirmPage from '@/pages/account/ConfirmPage';
 import ProtectedRoutes from './ProtectedRoutes';
+import AboutUsPage from '@/pages/info/AboutUsPage';
+import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
+import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 
 const App: React.FC = () => {
     return (
@@ -14,9 +17,9 @@ const App: React.FC = () => {
             <Route path='/product/:id' element={<></>} />
 
             {/* Info pages */}
-            <Route path='/pages/about-us' element={<></>} />
-            <Route path='/pages/privacy-policy' element={<></>} />
-            <Route path='/pages/terms-conditions' element={<></>} />
+            <Route path='/info/about-us' element={<AboutUsPage />} />
+            <Route path='/info/privacy-policy' element={<PrivacyPolicyPage />} />
+            <Route path='/info/terms-conditions' element={<TermsConditionsPage />} />
 
             {/* Account routes */}
             <Route path='/account/signin' element={<SignInPage />} />

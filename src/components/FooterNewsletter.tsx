@@ -26,7 +26,7 @@ const FooterNewsletter: React.FC<Props> = ({ onSubscribe }: Props) => {
                     </button>
                 </div>
                 <p className='text-sm text-slate-100/50'>
-                    By signing up to our newsletter you agree to our <a href='/pages/terms-conditions'>terms</a> and <a href='/pages/privacy-policy'>privacy policy</a>.
+                    By signing up to our newsletter you agree to our <a href='/info/terms-conditions'>terms</a> and <a href='/info/privacy-policy'>privacy policy</a>.
                 </p>
             </form>
         </div>
