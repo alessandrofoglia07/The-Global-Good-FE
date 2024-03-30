@@ -1,5 +1,6 @@
 import { FaInstagram as InstagramIcon, FaFacebook as FacebookIcon } from 'react-icons/fa';
 import { FaXTwitter as XIcon } from 'react-icons/fa6';
+import collections from './collections';
 
 interface FooterSection {
     title: string;
@@ -47,11 +48,6 @@ export const footerSections: FooterSection[] = [
     },
     {
         title: 'Collections',
-        links: [
-            { title: 'Clothing & Accessories', href: '/shop?collection=clothing-accessories' },
-            { title: 'Home & Living', href: '/shop?collection=home-living' },
-            { title: 'Beauty & Wellness', href: '/shop?collection=beauty-wellness' },
-            { title: 'Food & Beverages', href: '/shop?collection=food-beverages' }
-        ]
+        links: collections
     }
 ];
