@@ -8,12 +8,13 @@ import ProtectedRoutes from './ProtectedRoutes';
 import AboutUsPage from '@/pages/info/AboutUsPage';
 import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
 import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
+import ShopPage from '@/pages/ShopPage';
 
 const App: React.FC = () => {
     return (
         <Routes>
             <Route path='/' element={<HomePage />} />
-            <Route path='/shop' element={<></>} />
+            <Route path='/shop' element={<ShopPage />} />
             <Route path='/product/:id' element={<></>} />
 
             {/* Info pages */}
