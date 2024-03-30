@@ -7,4 +7,5 @@ if (!UserPoolId || !ClientId) {
     throw new Error('UserPoolId and ClientId are required');
 }
 
-export default new CognitoUserPool({ UserPoolId, ClientId });
+export const localStorageUserPool = new CognitoUserPool({ UserPoolId, ClientId, Storage: localStorage });
+export const sessionStorageUserPool = new CognitoUserPool({ UserPoolId, ClientId, Storage: sessionStorage });

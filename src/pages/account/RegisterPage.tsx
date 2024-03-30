@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import userPool from '@/utils/userPool';
+import { localStorageUserPool } from '@/utils/userPool';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Logo from '@/components/Logo';
@@ -68,7 +68,7 @@ const RegisterPage = () => {
 
         const email = new CognitoUserAttribute({ Name: 'email', Value: form.email });
 
-        userPool.signUp(form.username, form.password, [email], [], (err?: Error) => {
+        localStorageUserPool.signUp(form.username, form.password, [email], [], (err?: Error) => {
             if (err) {
                 setErr((prev) => ({ ...prev, password: formatErrMsg(err.message) }));
             } else {

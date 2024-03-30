@@ -1,5 +1,5 @@
 import { PropsWithChildren, createContext } from 'react';
-import userPool from '@/utils/userPool';
+import { localStorageUserPool, sessionStorageUserPool } from '@/utils/userPool';
 import { AuthenticationDetails, CognitoUser, CognitoUserSession, ICognitoStorage } from 'amazon-cognito-identity-js';
 import { PasswordSchema } from '@/utils/schemas/authSchemas';
 
@@ -14,7 +14,12 @@ const AccountContext = createContext<IAuthContext>({} as IAuthContext);
 const Account = ({ children }: PropsWithChildren) => {
     const getSession = async () => {
         return await new Promise<CognitoUserSession | null>((resolve, reject) => {
-            const user = userPool.getCurrentUser();
+            let user = localStorageUserPool.getCurrentUser();
+            if (!user && localStorage.getItem('rememberMe') === '1') {
+                user = sessionStorageUserPool.getCurrentUser();
+            } else {
+                localStorage.removeItem('rememberMe');
+            }
             if (user) {
                 user.getSession((err: Error | null, session: CognitoUserSession | null) => {
                     if (err) reject(err);
@@ -33,7 +38,12 @@ const Account = ({ children }: PropsWithChildren) => {
             } else if (!validate.success) {
                 reject(validate.error.errors[0]?.message);
             } else {
-                const cognitoUser = new CognitoUser({ Username: UsernameOrEmail, Pool: userPool, Storage });
+                if (Storage === sessionStorage) {
+                    localStorage.setItem('rememberMe', '1');
+                } else {
+                    localStorage.removeItem('rememberMe');
+                }
+                const cognitoUser = new CognitoUser({ Username: UsernameOrEmail, Pool: Storage === localStorage ? localStorageUserPool : sessionStorageUserPool, Storage });
 
                 const authenticationDetails = new AuthenticationDetails({ Username: UsernameOrEmail, Password });
 
@@ -46,7 +56,12 @@ const Account = ({ children }: PropsWithChildren) => {
     };
 
     const logout = () => {
-        const user = userPool.getCurrentUser();
+        let user = localStorageUserPool.getCurrentUser();
+        if (!user && localStorage.getItem('rememberMe') === '1') {
+            user = sessionStorageUserPool.getCurrentUser();
+        } else {
+            localStorage.removeItem('rememberMe');
+        }
         if (user) user.signOut();
     };
 

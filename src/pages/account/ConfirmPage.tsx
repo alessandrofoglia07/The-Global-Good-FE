@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import userPool from '@/utils/userPool';
+import { localStorageUserPool } from '@/utils/userPool';
 import Logo from '@/components/Logo';
 import Navbar from '@/components/Navbar';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
@@ -28,7 +28,7 @@ const ConfirmPage = () => {
             return setErrMsg('Username is required.');
         }
 
-        const cognitoUser = new CognitoUser({ Username: username, Pool: userPool });
+        const cognitoUser = new CognitoUser({ Username: username, Pool: localStorageUserPool });
 
         cognitoUser.confirmRegistration(code, true, (err?: Error) => {
             if (err) {
@@ -48,7 +48,7 @@ const ConfirmPage = () => {
             return setErrMsg('Username is required.');
         }
 
-        const cognitoUser = new CognitoUser({ Username: username.toLowerCase(), Pool: userPool });
+        const cognitoUser = new CognitoUser({ Username: username.toLowerCase(), Pool: localStorageUserPool });
 
         cognitoUser.resendConfirmationCode((err?: Error) => {
             if (err) {
