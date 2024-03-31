@@ -8,38 +8,62 @@ import Checkbox from '@/components/Checkbox';
 const materials = ['cotton', 'leather', 'metal', 'polyester', 'rubber', 'steel', 'wood'];
 const countries = ['usa', 'canada', 'mexico', 'uk', 'france', 'germany', 'italy', 'japan', 'china', 'india', 'brazil']; // TODO: Change based on actual data
 
-// Search params: ?collection=clothing-accessories+home-living&maxprice=750&material=cotton+leather&availability=in-stock&country=usa
+interface Filters {
+    collection: string | null;
+    usePriceFilter: boolean;
+    maxPrice: number;
+    materials: string[];
+    availability: 'in-stock' | null;
+    countries: string[];
+}
+
 const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [selectedCollection, setSelectedCollection] = useState<string | null>(collections.find((collection) => collection.id === searchParams.get('collection'))?.title || null); // Default collection is all
-    const [maxPrice, setMaxPrice] = useState<number>(parseInt(searchParams.get('maxprice') || '250')); // Default max price is $500
-    const [selectedMaterials, setSelectedMaterials] = useState<string[]>(searchParams.get('material')?.split(' ') || []); // Default material is all
-    const [availability, setAvailability] = useState<'in-stock' | null>(searchParams.get('availability') === 'in-stock' ? 'in-stock' : null); // Default availability is all
-    const [selectedCountries, setSelectedCountries] = useState<string[]>(searchParams.get('country')?.split(' ') || []); // Default country is all
-    const [usePriceFilter, setUsePriceFilter] = useState<boolean>(searchParams.get('maxprice') !== null); // Default price filter is off
+    const [filters, setFilters] = useState<Filters>({
+        collection: collections.find((collection) => collection.id === searchParams.get('collection'))?.title || null,
+        maxPrice: parseInt(searchParams.get('maxprice') || '250'),
+        usePriceFilter: searchParams.get('maxprice') !== null,
+        materials: searchParams.get('material')?.split(' ') || [],
+        availability: searchParams.get('availability') === 'in-stock' ? 'in-stock' : null,
+        countries: searchParams.get('country')?.split(' ') || []
+    });
 
     const rangeRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         updateRangeInput();
-    }, [usePriceFilter]);
+    }, [filters.usePriceFilter]);
 
     const setCollection = (collection: Collection) => {
-        if (collection.title === selectedCollection) {
-            setSelectedCollection(null);
+        if (collection.title === filters.collection) {
+            setFilters((prev) => ({ ...prev, collection: null }));
             const newParams = new URLSearchParams(searchParams.toString());
             newParams.delete('collection');
             setSearchParams(newParams.toString());
         } else {
-            setSelectedCollection(collection.title);
-            setSearchParams({ ...searchParams, collection: collection.id });
+            setFilters((prev) => ({ ...prev, collection: collection.title }));
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.set('collection', collection.id);
+            setSearchParams(newParams.toString());
         }
+    };
+
+    const handlePriceCheck = () => {
+        const newParams = new URLSearchParams(searchParams.toString());
+        if (filters.usePriceFilter) {
+            newParams.delete('maxprice');
+        } else {
+            newParams.set('maxprice', filters.maxPrice.toString());
+        }
+        setSearchParams(newParams.toString());
+
+        setFilters((prev) => ({ ...prev, usePriceFilter: !prev.usePriceFilter }));
     };
 
     const updateRangeInput = () => {
         if (!rangeRef.current) return;
-        if (!usePriceFilter) {
+        if (!filters.usePriceFilter) {
             rangeRef.current.style.background = 'rgb(72 60 50 / 0.2)';
             rangeRef.current.style.accentColor = 'rgb(72 60 50 / 0.2)';
             return;
@@ -54,30 +78,33 @@ const ShopPage: React.FC = () => {
             handleRangeInput(e);
             return;
         }
-        setMaxPrice(parseInt(rangeRef.current.value));
+        setFilters((prev) => ({ ...prev, maxPrice: parseInt(rangeRef.current!.value) }));
+        const newParams = new URLSearchParams(searchParams.toString());
+        newParams.set('maxprice', rangeRef.current.value);
+        setSearchParams(newParams.toString());
         updateRangeInput();
     };
 
     const handleMaterialChange = (material: string) => {
-        if (selectedMaterials.includes(material)) {
-            setSelectedMaterials(selectedMaterials.filter((m) => m !== material));
+        if (filters.materials.includes(material)) {
+            setFilters((prev) => ({ ...prev, materials: prev.materials.filter((m) => m !== material) }));
         } else {
-            setSelectedMaterials([...selectedMaterials, material]);
+            setFilters((prev) => ({ ...prev, materials: [...prev.materials, material] }));
         }
     };
 
     const handleCountryChange = (country: string) => {
-        if (selectedCountries.includes(country)) {
-            setSelectedCountries(selectedCountries.filter((c) => c !== country));
+        if (filters.countries.includes(country)) {
+            setFilters((prev) => ({ ...prev, countries: prev.countries.filter((c) => c !== country) }));
         } else {
-            setSelectedCountries([...selectedCountries, country]);
+            setFilters((prev) => ({ ...prev, countries: [...prev.countries, country] }));
         }
     };
 
     return (
         <div id='ShopPage' className='w-screen'>
             <Navbar />
-            <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{selectedCollection || 'All products'}</h1>
+            <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{filters.collection || 'All products'}</h1>
             <div className='relative left-1/2 grid max-h-screen w-screen max-w-6xl -translate-x-1/2 grid-cols-4'>
                 <aside className='col-span-1'>
                     <h2 className='pb-4 text-xl font-extrabold uppercase tracking-tight text-tan/80'>Filters</h2>
@@ -90,7 +117,7 @@ const ShopPage: React.FC = () => {
                                         key={i}
                                         onClick={() => setCollection(collection)}
                                         className='block pl-2 transition-colors hover:!text-taupe'
-                                        style={{ color: collection.title === selectedCollection ? 'rgb(72 60 50)' : 'rgb(72 60 50 / 0.5)' }}>
+                                        style={{ color: collection.title === filters.collection ? 'rgb(72 60 50)' : 'rgb(72 60 50 / 0.5)' }}>
                                         {collection.title}
                                     </button>
                                 ))}
@@ -100,7 +127,7 @@ const ShopPage: React.FC = () => {
                             <h3 className='inline-flex'>
                                 Price{' '}
                                 <span>
-                                    <Checkbox id='price-check' label='' checked={usePriceFilter} onChange={() => setUsePriceFilter((prev) => !prev)} />
+                                    <Checkbox id='price-check' label='' checked={filters.usePriceFilter} onChange={handlePriceCheck} />
                                 </span>
                             </h3>
                             <div>
@@ -111,12 +138,12 @@ const ShopPage: React.FC = () => {
                                     step={5}
                                     className='h-1 w-full cursor-pointer appearance-none rounded-xl accent-tan'
                                     ref={rangeRef}
-                                    value={maxPrice}
+                                    value={filters.maxPrice}
                                     onChange={handleRangeInput}
-                                    disabled={!usePriceFilter}
+                                    disabled={!filters.usePriceFilter}
                                 />
-                                <p style={{ color: usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
-                                    ${maxPrice}
+                                <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
+                                    ${filters.maxPrice}
                                 </p>
                             </div>
                         </li>
@@ -126,7 +153,7 @@ const ShopPage: React.FC = () => {
                                 {materials.map((material, i) => (
                                     <div key={i}>
                                         <Checkbox
-                                            checked={selectedMaterials.includes(material)}
+                                            checked={filters.materials.includes(material)}
                                             onChange={() => handleMaterialChange(material)}
                                             label={material}
                                             id={`check-material-${i}`}
@@ -139,8 +166,8 @@ const ShopPage: React.FC = () => {
                             <h3>Availability</h3>
                             <div>
                                 <Checkbox
-                                    checked={availability === 'in-stock'}
-                                    onChange={() => setAvailability((prev) => (prev === 'in-stock' ? null : 'in-stock'))}
+                                    checked={filters.availability === 'in-stock'}
+                                    onChange={() => setFilters((prev) => ({ ...prev, availability: prev.availability === 'in-stock' ? null : 'in-stock' }))}
                                     label='In stock'
                                     id='in-stock-check'
                                 />
@@ -152,7 +179,7 @@ const ShopPage: React.FC = () => {
                                 {countries.map((country, i) => (
                                     <div key={i}>
                                         <Checkbox
-                                            checked={selectedCountries.includes(country)}
+                                            checked={filters.countries.includes(country)}
                                             onChange={() => handleCountryChange(country)}
                                             label={country}
                                             id={`check-country-${i}`}
