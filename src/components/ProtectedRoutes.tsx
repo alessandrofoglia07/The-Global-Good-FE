@@ -21,7 +21,7 @@ const ProtectedRoutes: React.FC = () => {
 
     if (isAuth === null) return null;
 
-    return isAuth ? <Outlet /> : <Navigate to='/account/login' replace />;
+    return isAuth ? <Outlet /> : <Navigate to='/account/signin' replace />;
 };
 
 export default ProtectedRoutes;

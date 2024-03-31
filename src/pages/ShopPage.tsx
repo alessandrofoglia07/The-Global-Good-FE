@@ -13,20 +13,27 @@ const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [selectedCollection, setSelectedCollection] = useState<string | null>(searchParams.get('collection')); // Default collection is all
-    const [maxPrice, setMaxPrice] = useState<number>(parseInt(searchParams.get('maxprice') || '500')); // Default max price is $500
+    const [maxPrice, setMaxPrice] = useState<number>(parseInt(searchParams.get('maxprice') || '250')); // Default max price is $500
     const [selectedMaterials, setSelectedMaterials] = useState<string[]>(searchParams.get('material')?.split(' ') || []); // Default material is all
     const [availability, setAvailability] = useState<'in-stock' | null>(searchParams.get('availability') === 'in-stock' ? 'in-stock' : null); // Default availability is all
     const [selectedCountries, setSelectedCountries] = useState<string[]>(searchParams.get('country')?.split(' ') || []); // Default country is all
+    const [usePriceFilter, setUsePriceFilter] = useState<boolean>(searchParams.get('maxprice') !== null); // Default price filter is off
 
     const rangeRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         updateRangeInput();
-    }, []);
+    }, [usePriceFilter]);
 
     const updateRangeInput = () => {
         if (!rangeRef.current) return;
-        const rangeValue = parseInt(rangeRef.current.value) / 10;
+        if (!usePriceFilter) {
+            rangeRef.current.style.background = 'rgb(72 60 50 / 0.2)';
+            rangeRef.current.style.accentColor = 'rgb(72 60 50 / 0.2)';
+            return;
+        }
+        const rangeValue = parseInt(rangeRef.current.value) / 5;
+        rangeRef.current.style.accentColor = '#D2B48C';
         rangeRef.current.style.background = 'linear-gradient(to right, #D2B48C 0%, #D2B48C ' + rangeValue + '%, rgb(72 60 50 / 0.2) ' + rangeValue + '%, rgb(72 60 50 / 0.2) 100%)';
     };
 
@@ -70,7 +77,7 @@ const ShopPage: React.FC = () => {
                                     <button
                                         key={i}
                                         onClick={() => setSelectedCollection(collection.title)}
-                                        className='block pl-2 transition-colors hover:text-taupe'
+                                        className='block pl-2 transition-colors hover:!text-taupe'
                                         style={{ color: collection.title === selectedCollection ? 'rgb(72 60 50)' : 'rgb(72 60 50 / 0.5)' }}>
                                         {collection.title}
                                     </button>
@@ -78,18 +85,27 @@ const ShopPage: React.FC = () => {
                             </div>
                         </li>
                         <li>
-                            <h3>Price</h3>
+                            <h3 className='inline-flex'>
+                                Price{' '}
+                                <span>
+                                    <Checkbox id='price-check' label='' checked={usePriceFilter} onChange={() => setUsePriceFilter((prev) => !prev)} />
+                                </span>
+                            </h3>
                             <div>
                                 <input
                                     type='range'
                                     min={0}
-                                    max={1000}
-                                    step={1}
-                                    className='h-1 w-full cursor-pointer appearance-none rounded-xl accent-tan dark:bg-taupe/20'
+                                    max={500}
+                                    step={5}
+                                    className='h-1 w-full cursor-pointer appearance-none rounded-xl accent-tan'
                                     ref={rangeRef}
                                     value={maxPrice}
                                     onChange={handleRangeInput}
+                                    disabled={!usePriceFilter}
                                 />
+                                <p style={{ color: usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
+                                    ${maxPrice}
+                                </p>
                             </div>
                         </li>
                         <li>

@@ -14,7 +14,7 @@ const Checkbox: React.FC<Props> = ({ checked, onChange, label, id, labelClassNam
             <label className='flex-inline relative cursor-pointer items-center rounded-full px-3' htmlFor={id}>
                 <input
                     type='checkbox'
-                    className='peer relative top-1 h-5 w-5 cursor-pointer appearance-none rounded-md border transition-all checked:border-darktan checked:bg-darktan'
+                    className='peer relative top-1 h-5 w-5 cursor-pointer appearance-none rounded-md border-2 transition-all checked:border-darktan checked:bg-darktan'
                     id={id}
                     checked={checked}
                     onChange={onChange}
