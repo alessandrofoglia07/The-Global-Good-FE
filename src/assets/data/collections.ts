@@ -1,8 +1,13 @@
 export const collections = [
-    { title: 'Clothing & Accessories', href: '/shop?collection=clothing-accessories' },
-    { title: 'Home & Living', href: '/shop?collection=home-living' },
-    { title: 'Beauty & Wellness', href: '/shop?collection=beauty-wellness' },
-    { title: 'Food & Beverages', href: '/shop?collection=food-beverages' }
+    { title: 'Clothing & Accessories', id: 'clothing-accessories' },
+    { title: 'Home & Living', id: 'home-living' },
+    { title: 'Beauty & Wellness', id: 'beauty-wellness' },
+    { title: 'Food & Beverages', id: 'food-beverages' }
 ];
+
+export type Collection = {
+    title: string;
+    id: string;
+};
 
 export default collections;

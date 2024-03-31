@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Navbar from '@/components/Navbar';
 import React, { useEffect, useRef, useState } from 'react';
-import collections from '@/assets/data/collections';
+import { collections, Collection } from '@/assets/data/collections';
 import { useSearchParams } from 'react-router-dom';
 import Checkbox from '@/components/Checkbox';
 
@@ -12,7 +12,7 @@ const countries = ['usa', 'canada', 'mexico', 'uk', 'france', 'germany', 'italy'
 const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [selectedCollection, setSelectedCollection] = useState<string | null>(searchParams.get('collection')); // Default collection is all
+    const [selectedCollection, setSelectedCollection] = useState<string | null>(collections.find((collection) => collection.id === searchParams.get('collection'))?.title || null); // Default collection is all
     const [maxPrice, setMaxPrice] = useState<number>(parseInt(searchParams.get('maxprice') || '250')); // Default max price is $500
     const [selectedMaterials, setSelectedMaterials] = useState<string[]>(searchParams.get('material')?.split(' ') || []); // Default material is all
     const [availability, setAvailability] = useState<'in-stock' | null>(searchParams.get('availability') === 'in-stock' ? 'in-stock' : null); // Default availability is all
@@ -24,6 +24,18 @@ const ShopPage: React.FC = () => {
     useEffect(() => {
         updateRangeInput();
     }, [usePriceFilter]);
+
+    const setCollection = (collection: Collection) => {
+        if (collection.title === selectedCollection) {
+            setSelectedCollection(null);
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.delete('collection');
+            setSearchParams(newParams.toString());
+        } else {
+            setSelectedCollection(collection.title);
+            setSearchParams({ ...searchParams, collection: collection.id });
+        }
+    };
 
     const updateRangeInput = () => {
         if (!rangeRef.current) return;
@@ -65,7 +77,7 @@ const ShopPage: React.FC = () => {
     return (
         <div id='ShopPage' className='w-screen'>
             <Navbar />
-            <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>All products</h1>
+            <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{selectedCollection || 'All products'}</h1>
             <div className='relative left-1/2 grid max-h-screen w-screen max-w-6xl -translate-x-1/2 grid-cols-4'>
                 <aside className='col-span-1'>
                     <h2 className='pb-4 text-xl font-extrabold uppercase tracking-tight text-tan/80'>Filters</h2>
@@ -73,10 +85,10 @@ const ShopPage: React.FC = () => {
                         <li>
                             <h3>Collections</h3>
                             <div>
-                                {collections.map((collection, i) => (
+                                {collections.map((collection: Collection, i) => (
                                     <button
                                         key={i}
-                                        onClick={() => setSelectedCollection(collection.title)}
+                                        onClick={() => setCollection(collection)}
                                         className='block pl-2 transition-colors hover:!text-taupe'
                                         style={{ color: collection.title === selectedCollection ? 'rgb(72 60 50)' : 'rgb(72 60 50 / 0.5)' }}>
                                         {collection.title}
