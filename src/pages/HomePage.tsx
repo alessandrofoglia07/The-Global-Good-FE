@@ -59,11 +59,11 @@ const MainPage: React.FC = () => {
             </section>
             <section id='bestsellers' className='w-full py-4'>
                 <div className='flex w-full items-center justify-between px-12 pb-8 pt-12 -xs:pb-20'>
-                    <button onClick={() => sliderMove('prev')}>
+                    <button onClick={() => sliderMove('prev')} aria-label='button-arrow-left'>
                         <LeftArrowIcon className='text-3xl text-taupe' />
                     </button>
                     <h1 className='w-fit text-center text-4xl font-semibold tracking-tight text-taupe'>Our Best Sellers</h1>
-                    <button onClick={() => sliderMove('next')}>
+                    <button onClick={() => sliderMove('next')} aria-label='button-arrow-right'>
                         <RightArrowIcon className='text-3xl text-taupe' />
                     </button>
                 </div>

@@ -123,6 +123,7 @@ const RegisterPage = () => {
                             />
                             <div className='grid h-full w-1/6 place-items-center px-1'>
                                 <button
+                                    aria-label='toggle-password-visibility'
                                     type='button'
                                     onKeyDown={(e) => e.key === 'Enter' && setShowPass((prev) => !prev)}
                                     className='aspect-square h-full rounded-full text-center outline-offset-4'>

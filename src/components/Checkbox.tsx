@@ -6,9 +6,10 @@ interface Props {
     label: string;
     id: string;
     labelClassName?: string;
+    ariaLabel?: string;
 }
 
-const Checkbox: React.FC<Props> = ({ checked, onChange, label, id, labelClassName }: Props) => {
+const Checkbox: React.FC<Props> = ({ checked, onChange, label, id, labelClassName, ariaLabel }: Props) => {
     return (
         <div>
             <label className='flex-inline relative cursor-pointer items-center rounded-full px-3' htmlFor={id}>
@@ -28,7 +29,7 @@ const Checkbox: React.FC<Props> = ({ checked, onChange, label, id, labelClassNam
                     </svg>
                 </span>
             </label>
-            <label className={`cursor-pointer select-none capitalize text-taupe/60 ${labelClassName}`} htmlFor={id}>
+            <label aria-label={label.length > 0 ? undefined : ariaLabel} className={`cursor-pointer select-none capitalize text-taupe/60 ${labelClassName}`} htmlFor={id}>
                 {label}
             </label>
         </div>

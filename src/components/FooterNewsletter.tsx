@@ -13,8 +13,8 @@ const FooterNewsletter: React.FC<Props> = ({ onSubscribe }: Props) => {
         <div className='col-span-2 border-slate-100 px-8 lg:border-r lg:px-16'>
             {windowW > 1024 && <Logo className='w-fit text-slate-100' />}
             <form onSubmit={onSubscribe}>
-                <h1 className='text-2xl font-bold tracking-tight text-slate-100 lg:mt-6'>Stay in touch</h1>
-                <h4 className='mt-3 text-sm text-slate-100'>Sign up to our newsletter and receive every news about our store and artisans we support.</h4>
+                <h2 className='text-2xl font-bold tracking-tight text-slate-100 lg:mt-6'>Stay in touch</h2>
+                <h3 className='mt-3 text-sm text-slate-100'>Sign up to our newsletter and receive every news about our store and artisans we support.</h3>
                 <div className='py-4'>
                     <input
                         type='email'

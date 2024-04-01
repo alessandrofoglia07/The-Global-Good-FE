@@ -41,13 +41,13 @@ const Navbar: React.FC = () => {
             </div>
             <div id='center' className='absolute left-1/2 flex h-20 -translate-x-1/2 items-center justify-center'></div>
             <div id='right' className='flex items-center gap-4 px-8'>
-                <a href='/account'>
+                <a href='/account' aria-label='link-to-account-page'>
                     <UserIcon className='text-2xl hover:text-taupe' />
                 </a>
-                <button onClick={handleSearch}>
+                <button onClick={handleSearch} aria-label='search-button'>
                     <SearchIcon className='text-2xl hover:text-taupe' />
                 </button>
-                <button onClick={handleCartOpen}>
+                <button onClick={handleCartOpen} aria-label='cart-button'>
                     <CartIcon className='text-2xl hover:text-taupe' />
                 </button>
             </div>
