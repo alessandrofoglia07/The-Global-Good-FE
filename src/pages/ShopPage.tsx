@@ -88,16 +88,60 @@ const ShopPage: React.FC = () => {
     const handleMaterialChange = (material: string) => {
         if (filters.materials.includes(material)) {
             setFilters((prev) => ({ ...prev, materials: prev.materials.filter((m) => m !== material) }));
+
+            // If there is only one material left, remove the material query parameter
+            if (filters.materials.length === 1) {
+                setFilters((prev) => ({ ...prev, materials: [] }));
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.delete('material');
+                setSearchParams(newParams.toString());
+            } else {
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.set('material', filters.materials.filter((m) => m !== material).join(' '));
+                setSearchParams(newParams.toString());
+            }
         } else {
             setFilters((prev) => ({ ...prev, materials: [...prev.materials, material] }));
+
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.set('material', [...filters.materials, material].join(' '));
+            setSearchParams(newParams.toString());
         }
+    };
+
+    const handleAvailabilityChange = () => {
+        setFilters((prev) => ({ ...prev, availability: prev.availability === 'in-stock' ? null : 'in-stock' }));
+
+        const newParams = new URLSearchParams(searchParams.toString());
+        if (filters.availability === 'in-stock') {
+            newParams.delete('availability');
+        } else {
+            newParams.set('availability', 'in-stock');
+        }
+        setSearchParams(newParams.toString());
     };
 
     const handleCountryChange = (country: string) => {
         if (filters.countries.includes(country)) {
             setFilters((prev) => ({ ...prev, countries: prev.countries.filter((c) => c !== country) }));
+
+            // If there is only one country left, remove the country query parameter
+            if (filters.countries.length === 1) {
+                setFilters((prev) => ({ ...prev, countries: [] }));
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.delete('country');
+                setSearchParams(newParams.toString());
+            } else {
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.set('country', filters.countries.filter((c) => c !== country).join(' '));
+                setSearchParams(newParams.toString());
+            }
         } else {
             setFilters((prev) => ({ ...prev, countries: [...prev.countries, country] }));
+
+            const newParams = new URLSearchParams(searchParams.toString());
+            newParams.set('country', [...filters.countries, country].join(' '));
+            setSearchParams(newParams.toString());
         }
     };
 
@@ -107,8 +151,8 @@ const ShopPage: React.FC = () => {
             <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{filters.collection || 'All products'}</h1>
             <div className='relative left-1/2 grid max-h-screen w-screen max-w-6xl -translate-x-1/2 grid-cols-4'>
                 <aside className='col-span-1'>
-                    <h2 className='pb-4 text-xl font-extrabold uppercase tracking-tight text-tan/80'>Filters</h2>
-                    <ul className='space-y-8 [&>li>h3]:pb-2 [&>li>h3]:text-lg [&>li>h3]:font-bold [&>li>h3]:uppercase [&>li>h3]:text-tan/70'>
+                    <h2 className='select-none pb-4 text-xl font-extrabold uppercase tracking-tight text-tan/80'>Filters</h2>
+                    <ul className='space-y-8 [&>li>h3]:select-none [&>li>h3]:pb-2 [&>li>h3]:text-lg [&>li>h3]:font-bold [&>li>h3]:uppercase [&>li>h3]:text-tan/70'>
                         <li>
                             <h3>Collections</h3>
                             <div>
@@ -127,7 +171,7 @@ const ShopPage: React.FC = () => {
                             <h3 className='inline-flex'>
                                 Price{' '}
                                 <span>
-                                    <Checkbox id='price-check' label='' checked={filters.usePriceFilter} onChange={handlePriceCheck} />
+                                    <Checkbox id='price-check' ariaLabel='use-price-filter-checkbox' label='' checked={filters.usePriceFilter} onChange={handlePriceCheck} />
                                 </span>
                             </h3>
                             <div>
@@ -141,6 +185,8 @@ const ShopPage: React.FC = () => {
                                     value={filters.maxPrice}
                                     onChange={handleRangeInput}
                                     disabled={!filters.usePriceFilter}
+                                    alt='Price range slider'
+                                    aria-label='price-range-slider'
                                 />
                                 <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
                                     ${filters.maxPrice}
@@ -165,12 +211,7 @@ const ShopPage: React.FC = () => {
                         <li>
                             <h3>Availability</h3>
                             <div>
-                                <Checkbox
-                                    checked={filters.availability === 'in-stock'}
-                                    onChange={() => setFilters((prev) => ({ ...prev, availability: prev.availability === 'in-stock' ? null : 'in-stock' }))}
-                                    label='In stock'
-                                    id='in-stock-check'
-                                />
+                                <Checkbox checked={filters.availability === 'in-stock'} onChange={handleAvailabilityChange} label='In stock' id='in-stock-check' />
                             </div>
                         </li>
                         <li>
