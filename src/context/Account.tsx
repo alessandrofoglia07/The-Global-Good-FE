@@ -6,6 +6,7 @@ import { PasswordSchema } from '@/utils/schemas/authSchemas';
 type IAuthContext = {
     authenticate: (Username: string, Password: string, Storage: ICognitoStorage) => Promise<CognitoUserSession>;
     getSession: () => Promise<CognitoUserSession | null>;
+    isAdmin: () => Promise<boolean>;
     logout: () => void;
 };
 
@@ -55,6 +56,17 @@ const Account = ({ children }: PropsWithChildren) => {
         });
     };
 
+    const isAdmin = async () => {
+        const adminUsersGroup = import.meta.env.VITE_AWS_ADMIN_GROUP_NAME || 'admin-users';
+        try {
+            const session = await getSession();
+            if (!session) return false;
+            return session.getIdToken().payload['cognito:groups']?.includes(adminUsersGroup) || false;
+        } catch (err) {
+            throw new Error(err as string);
+        }
+    };
+
     const logout = () => {
         let user = localStorageUserPool.getCurrentUser();
         if (!user && localStorage.getItem('rememberMe') === '1') {
@@ -65,7 +77,7 @@ const Account = ({ children }: PropsWithChildren) => {
         if (user) user.signOut();
     };
 
-    return <AccountContext.Provider value={{ authenticate, getSession, logout }}>{children}</AccountContext.Provider>;
+    return <AccountContext.Provider value={{ authenticate, getSession, logout, isAdmin }}>{children}</AccountContext.Provider>;
 };
 
 export { Account, AccountContext };

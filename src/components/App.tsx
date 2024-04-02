@@ -9,6 +9,7 @@ import AboutUsPage from '@/pages/info/AboutUsPage';
 import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
 import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
+import AdminPage from '@/pages/AdminPage';
 
 const App: React.FC = () => {
     return (
@@ -32,6 +33,8 @@ const App: React.FC = () => {
                 <Route path='/account' element={<></>} />
                 <Route path='/checkout' element={<></>} />
             </Route>
+
+            <Route path='/admin' element={<AdminPage />} />
 
             <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
