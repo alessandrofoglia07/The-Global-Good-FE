@@ -4,9 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { collections, Collection } from '@/assets/data/collections';
 import { useSearchParams } from 'react-router-dom';
 import Checkbox from '@/components/Checkbox';
-
-const materials = ['cotton', 'leather', 'metal', 'polyester', 'rubber', 'steel', 'wood'];
-const countries = ['usa', 'canada', 'mexico', 'uk', 'france', 'germany', 'italy', 'japan', 'china', 'india', 'brazil']; // TODO: Change based on actual data
+import { materials } from '@/assets/data/materials';
+import { countries } from '@/assets/data/countries';
 
 interface Filters {
     collection: string | null;

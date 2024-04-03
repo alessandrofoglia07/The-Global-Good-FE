@@ -1,0 +1,1 @@
+export const countries = ['usa', 'canada', 'mexico', 'uk', 'france', 'germany', 'italy', 'japan', 'china', 'india', 'brazil']; // TODO: Change based on actual data

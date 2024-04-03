@@ -48,6 +48,9 @@ export const footerSections: FooterSection[] = [
     },
     {
         title: 'Collections',
-        links: collections
+        links: collections.map((collection) => ({
+            title: collection.title,
+            href: `/shop?collection=${collection.id}`
+        }))
     }
 ];
