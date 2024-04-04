@@ -1,1 +1,0 @@
-export const materials = ['cotton', 'leather', 'metal', 'polyester', 'rubber', 'steel', 'wood'];

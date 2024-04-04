@@ -1,17 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Navbar from '@/components/Navbar';
 import React, { useEffect, useRef, useState } from 'react';
 import { collections, Collection } from '@/assets/data/collections';
 import { useSearchParams } from 'react-router-dom';
 import Checkbox from '@/components/Checkbox';
-import { materials } from '@/assets/data/materials';
 import { countries } from '@/assets/data/countries';
 
 interface Filters {
     collection: string | null;
     usePriceFilter: boolean;
     maxPrice: number;
-    materials: string[];
     availability: 'in-stock' | null;
     countries: string[];
 }
@@ -23,7 +20,6 @@ const ShopPage: React.FC = () => {
         collection: collections.find((collection) => collection.id === searchParams.get('collection'))?.title || null,
         maxPrice: parseInt(searchParams.get('maxprice') || '250'),
         usePriceFilter: searchParams.get('maxprice') !== null,
-        materials: searchParams.get('material')?.split(' ') || [],
         availability: searchParams.get('availability') === 'in-stock' ? 'in-stock' : null,
         countries: searchParams.get('country')?.split(' ') || []
     });
@@ -82,30 +78,6 @@ const ShopPage: React.FC = () => {
         newParams.set('maxprice', rangeRef.current.value);
         setSearchParams(newParams.toString());
         updateRangeInput();
-    };
-
-    const handleMaterialChange = (material: string) => {
-        if (filters.materials.includes(material)) {
-            setFilters((prev) => ({ ...prev, materials: prev.materials.filter((m) => m !== material) }));
-
-            // If there is only one material left, remove the material query parameter
-            if (filters.materials.length === 1) {
-                setFilters((prev) => ({ ...prev, materials: [] }));
-                const newParams = new URLSearchParams(searchParams.toString());
-                newParams.delete('material');
-                setSearchParams(newParams.toString());
-            } else {
-                const newParams = new URLSearchParams(searchParams.toString());
-                newParams.set('material', filters.materials.filter((m) => m !== material).join(' '));
-                setSearchParams(newParams.toString());
-            }
-        } else {
-            setFilters((prev) => ({ ...prev, materials: [...prev.materials, material] }));
-
-            const newParams = new URLSearchParams(searchParams.toString());
-            newParams.set('material', [...filters.materials, material].join(' '));
-            setSearchParams(newParams.toString());
-        }
     };
 
     const handleAvailabilityChange = () => {
@@ -190,21 +162,6 @@ const ShopPage: React.FC = () => {
                                 <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
                                     ${filters.maxPrice}
                                 </p>
-                            </div>
-                        </li>
-                        <li>
-                            <h3>Material</h3>
-                            <div>
-                                {materials.map((material, i) => (
-                                    <div key={i}>
-                                        <Checkbox
-                                            checked={filters.materials.includes(material)}
-                                            onChange={() => handleMaterialChange(material)}
-                                            label={material}
-                                            id={`check-material-${i}`}
-                                        />
-                                    </div>
-                                ))}
                             </div>
                         </li>
                         <li>
