@@ -12,7 +12,7 @@ import { values } from '@/assets/data/brandValues';
 import { motion } from 'framer-motion';
 
 const MainPage: React.FC = () => {
-    const [bestSellers, setBestSellers] = useState(Array(9).fill(null));
+    const [bestSellers] = useState(Array(9).fill(null));
     const [windowWidth] = useWindowSize();
 
     const slider = useRef<Slider>(null);
@@ -108,7 +108,7 @@ const MainPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <section id='discover' className='flex aspect-[2/1] max-h-[50rem] w-full items-center -md:flex-col'>
+            <section id='discover' className='flex aspect-[2/1] h-fit max-h-[50rem] w-full items-center -md:flex-col'>
                 <div className='grid h-full place-items-center md:w-1/2'>
                     <div className='p-16 lg:p-20 xl:p-32'>
                         <motion.h2

@@ -6,19 +6,6 @@ const manifest: Partial<ManifestOptions> = {
     name: 'Modern React Vite App',
     short_name: 'React Vite',
     description: 'React Vite Starter',
-    icons: [
-        {
-            src: '/app-icon.png',
-            sizes: '512x512',
-            type: 'image/png'
-        },
-        {
-            src: '/app-icon.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-        }
-    ],
     start_url: '/',
     display: 'standalone',
     theme_color: '#000000',
