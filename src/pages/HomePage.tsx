@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar';
-import PeopleBg from '@/assets/imgs/landscape-people-1.jpg';
-import NatureBg from '@/assets/imgs/landscape-nature-1.jpg';
+import PeopleBg from '@/assets/imgs/landscape-people-1.png';
+import NatureBg from '@/assets/imgs/landscape-nature-1.png';
 import React, { useRef, useState, useEffect } from 'react';
 import useWindowSize from '@/hooks/useWindowSize';
 import Slider, { Settings } from 'react-slick';
