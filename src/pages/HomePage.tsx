@@ -58,7 +58,7 @@ const MainPage: React.FC = () => {
                 </div>
             </section>
             <section id='bestsellers' className='w-full py-4'>
-                <div className='flex w-full items-center justify-between px-12 pb-8 pt-12 -xs:pb-20'>
+                <div className='flex w-full items-center justify-between px-8 pb-8 pt-12 md:px-12 -xs:pb-20'>
                     <button onClick={() => sliderMove('prev')} aria-label='button-arrow-left'>
                         <LeftArrowIcon className='text-3xl text-taupe' />
                     </button>
@@ -77,7 +77,7 @@ const MainPage: React.FC = () => {
                     </Slider>
                 </div>
             </section>
-            <section id='values' className='min-h-[40rem] w-full bg-tan pt-8 md:px-8'>
+            <section id='values' className='min-h-[40rem] w-full bg-tan px-8 pt-8'>
                 <motion.h1
                     initial={{ translateX: '-50%', scale: 1, opacity: 0 }}
                     whileInView={{
@@ -87,7 +87,7 @@ const MainPage: React.FC = () => {
                         transition: { duration: 1, delay: 0.3 }
                     }}
                     viewport={{ once: true }}
-                    className='relative left-1/2 w-fit pb-8 pt-12 text-center text-5xl font-bold tracking-tighter text-taupe'>
+                    className='relative left-1/2 w-fit pb-4 pt-12 text-center text-4xl font-bold tracking-tighter text-taupe md:pb-8 md:text-5xl'>
                     Making a Positive Impact, One Purchase at a Time
                 </motion.h1>
                 <div className='mb-8 grid h-full w-full gap-8 py-12 sm:grid-cols-1 sm:grid-rows-4 md:grid-cols-2 md:grid-rows-1 lg:my-8 lg:grid-cols-4 lg:grid-rows-1'>

@@ -1,28 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from './Logo';
 import { LuUser2 as UserIcon, LuSearch as SearchIcon, LuShoppingCart as CartIcon } from 'react-icons/lu';
-import { RiAdminLine as AdminIcon } from 'react-icons/ri';
-import { AccountContext } from '@/context/Account';
 
 const Navbar: React.FC = () => {
-    const { isAdmin } = useContext(AccountContext);
-
-    const [admin, setAdmin] = useState<boolean | null>(null);
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
-
-    useEffect(() => {
-        const checkAdmin = async () => {
-            try {
-                const admin = await isAdmin();
-                setAdmin(admin);
-            } catch (err) {
-                setAdmin(false);
-            }
-        };
-
-        checkAdmin();
-    }, [isAdmin]);
 
     const controlNavbar = () => {
         if (lastScrollY === 0) {
@@ -59,13 +41,6 @@ const Navbar: React.FC = () => {
             </div>
             <div id='center' className='absolute left-1/2 flex h-20 -translate-x-1/2 items-center justify-center'></div>
             <div id='right' className='flex items-center gap-4 px-8'>
-                {admin && (
-                    <a href='/admin' aria-label='link-to-admin-page'>
-                        <span className='text-2xl hover:text-taupe'>
-                            <AdminIcon className='text-2xl hover:text-taupe' />
-                        </span>
-                    </a>
-                )}
                 <a href='/account' aria-label='link-to-account-page'>
                     <UserIcon className='text-2xl hover:text-taupe' />
                 </a>

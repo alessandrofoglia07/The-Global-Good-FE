@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { collections, Collection } from '@/assets/data/collections';
 import { useSearchParams } from 'react-router-dom';
 import Checkbox from '@/components/Checkbox';
-import { countries } from '@/assets/data/countries';
+import countries from '@/assets/data/countries.json';
+// import axios from '@/api/axios';
 
 interface Filters {
     collection: string | null;
@@ -23,8 +24,18 @@ const ShopPage: React.FC = () => {
         availability: searchParams.get('availability') === 'in-stock' ? 'in-stock' : null,
         countries: searchParams.get('country')?.split(' ') || []
     });
+    // const [products, setProducts] = useState<unknown[]>([]);
 
     const rangeRef = useRef<HTMLInputElement>(null);
+
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         const res = await axios.get('/products');
+    //         setProducts(res.data);
+    //         console.log(res.data);
+    //     };
+    //     fetchProducts();
+    // }, [filters]);
 
     useEffect(() => {
         updateRangeInput();
@@ -119,11 +130,13 @@ const ShopPage: React.FC = () => {
     return (
         <div id='ShopPage' className='w-screen'>
             <Navbar />
-            <h1 className='mb-16 mt-32 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{filters.collection || 'All products'}</h1>
-            <div className='relative left-1/2 grid max-h-screen w-screen max-w-6xl -translate-x-1/2 grid-cols-4'>
-                <aside className='col-span-1'>
-                    <h2 className='select-none pb-4 text-xl font-extrabold uppercase tracking-tight text-tan/80'>Filters</h2>
-                    <ul className='space-y-8 [&>li>h3]:select-none [&>li>h3]:pb-2 [&>li>h3]:text-lg [&>li>h3]:font-bold [&>li>h3]:uppercase [&>li>h3]:text-tan/70'>
+            <div className='h-16 w-full'></div>
+            <h3 className='mt-8 w-full text-center text-3xl font-semibold capitalize text-taupe'>Shop</h3>
+            <h1 className='mb-16 mt-4 w-full text-center text-5xl font-extrabold capitalize tracking-tight text-taupe'>{filters.collection || 'All products'}</h1>
+            <div className='relative left-1/2 flex max-h-screen w-screen max-w-6xl -translate-x-1/2 grid-cols-4 flex-col md:grid'>
+                <aside className='col-span-1 -md:hidden'>
+                    <h2 className='select-none pb-4 text-xl font-extrabold uppercase tracking-tight text-darktan/90'>Filters</h2>
+                    <ul className='space-y-8 [&>li>h3]:select-none [&>li>h3]:pb-2 [&>li>h3]:text-lg [&>li>h3]:font-bold [&>li>h3]:uppercase [&>li>h3]:text-darktan/80'>
                         <li>
                             <h3>Collections</h3>
                             <div>
@@ -132,7 +145,7 @@ const ShopPage: React.FC = () => {
                                         key={i}
                                         onClick={() => setCollection(collection)}
                                         className='block pl-2 transition-colors hover:!text-taupe'
-                                        style={{ color: collection.title === filters.collection ? 'rgb(72 60 50)' : 'rgb(72 60 50 / 0.5)' }}>
+                                        style={{ color: collection.title === filters.collection ? 'rgb(72 60 50 / 0.8)' : 'rgb(72 60 50 / 0.5)' }}>
                                         {collection.title}
                                     </button>
                                 ))}
@@ -159,7 +172,7 @@ const ShopPage: React.FC = () => {
                                     alt='Price range slider'
                                     aria-label='price-range-slider'
                                 />
-                                <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='transition-colors'>
+                                <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='select-none transition-colors'>
                                     ${filters.maxPrice}
                                 </p>
                             </div>
@@ -187,6 +200,9 @@ const ShopPage: React.FC = () => {
                         </li>
                     </ul>
                 </aside>
+                <div className='w-full md:hidden'>
+                    <button className='w-1/2 rounded-md border-2 border-taupe/30 bg-tan/30 px-6 py-4 text-xl font-bold text-taupe'>Filter</button>
+                </div>
                 <main className='col-span-3 overflow-auto'>Main</main>
             </div>
         </div>
