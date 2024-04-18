@@ -10,3 +10,11 @@ export interface Product {
     materials: string[];
     availability: number;
 }
+
+export interface Filters {
+    collection: string | null;
+    usePriceFilter: boolean;
+    maxPrice: number;
+    availability: 'in-stock' | null;
+    countries: string[];
+}
