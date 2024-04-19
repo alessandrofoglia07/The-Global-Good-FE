@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Checkbox from './Checkbox';
 import { Collection, collections } from '@/assets/data/collections';
 import { Filters } from '@/types';
@@ -17,6 +17,8 @@ interface Props {
 
 const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filters, setFilters, setFiltersOpen }: Props) => {
     const rangeRef = useRef<HTMLInputElement>(null);
+
+    const [priceLocal, setPriceLocal] = useState(filters.maxPrice);
 
     const [w] = useWindowSize();
 
@@ -71,11 +73,26 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
             handleRangeInput(e);
             return;
         }
-        setFilters((prev) => ({ ...prev, maxPrice: parseInt(rangeRef.current!.value) }));
+
+        updateRangeInput();
+        setPriceLocal(parseInt(rangeRef.current.value));
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set('maxprice', rangeRef.current.value);
         setSearchParams(newParams.toString());
-        updateRangeInput();
+
+        const debounce = <T extends unknown[]>(func: (...args: T) => void, delay: number) => {
+            let timeoutId: number;
+            return (...args: T) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func(...args);
+                }, delay);
+            };
+        };
+
+        debounce(() => {
+            setFilters((prev) => ({ ...prev, maxPrice: parseInt(rangeRef.current!.value) }));
+        }, 500)();
     };
 
     const handleAvailabilityChange = () => {
@@ -156,14 +173,14 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
                             step={5}
                             className='h-1 w-full cursor-pointer appearance-none rounded-xl accent-tan'
                             ref={rangeRef}
-                            value={filters.maxPrice}
+                            value={priceLocal}
                             onChange={handleRangeInput}
                             disabled={!filters.usePriceFilter}
                             alt='Price range slider'
                             aria-label='price-range-slider'
                         />
                         <p style={{ color: filters.usePriceFilter ? '#D2B48C' : 'rgb(72 60 50 / 0.2)' }} className='select-none transition-colors'>
-                            ${filters.maxPrice}
+                            ${priceLocal}
                         </p>
                     </div>
                 </li>

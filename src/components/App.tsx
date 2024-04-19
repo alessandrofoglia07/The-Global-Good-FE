@@ -33,6 +33,8 @@ const App: React.FC = () => {
                 <Route path='/checkout' element={<></>} />
             </Route>
 
+            <Route path='/product-imgs/*' element={<></>} />
+
             <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
     );
