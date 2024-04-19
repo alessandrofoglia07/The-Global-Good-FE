@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { collections } from '@/assets/data/collections';
 import { useSearchParams } from 'react-router-dom';
 import { Filters } from '@/types';
-import FiltersSelector from '@/components/FIltersSelector';
-// import axios from '@/api/axios';
+import FiltersSelector from '@/components/FiltersSelector';
+import axios from '@/api/axios';
 
 const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -16,17 +16,22 @@ const ShopPage: React.FC = () => {
         availability: searchParams.get('availability') === 'in-stock' ? 'in-stock' : null,
         countries: searchParams.get('country')?.split(' ') || []
     });
-    // const [products, setProducts] = useState<unknown[]>([]);
+    const [products, setProducts] = useState<unknown[]>([]);
     const [filterOpen, setFilterOpen] = useState(false);
 
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         const res = await axios.get('/products');
-    //         setProducts(res.data);
-    //         console.log(res.data);
-    //     };
-    //     fetchProducts();
-    // }, [filters]);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const queryParams = new URLSearchParams();
+            if (filters.collection) queryParams.set('collection', collections.find((collection) => collection.title === filters.collection)?.id || '');
+            if (filters.usePriceFilter) queryParams.set('maxprice', filters.maxPrice.toString());
+            if (filters.availability) queryParams.set('availability', filters.availability);
+            if (filters.countries.length) queryParams.set('country', filters.countries.join(' '));
+            const res = await axios.get('/products', { params: queryParams });
+            setProducts(res.data);
+            console.log(res.data);
+        };
+        fetchProducts();
+    }, [filters]);
 
     useEffect(() => {
         const disableFilterOpen = () => window.innerWidth > 768 && setFilterOpen(false);
