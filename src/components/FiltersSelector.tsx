@@ -63,7 +63,7 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
             rangeRef.current.style.accentColor = 'rgb(72 60 50 / 0.2)';
             return;
         }
-        const rangeValue = parseInt(rangeRef.current.value) / 5;
+        const rangeValue = parseInt(rangeRef.current.value);
         rangeRef.current.style.accentColor = '#D2B48C';
         rangeRef.current.style.background = 'linear-gradient(to right, #D2B48C 0%, #D2B48C ' + rangeValue + '%, rgb(72 60 50 / 0.2) ' + rangeValue + '%, rgb(72 60 50 / 0.2) 100%)';
     };
@@ -92,7 +92,7 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
 
         debounce(() => {
             setFilters((prev) => ({ ...prev, maxPrice: parseInt(rangeRef.current!.value) }));
-        }, 500)();
+        }, 800)();
     };
 
     const handleAvailabilityChange = () => {
@@ -169,8 +169,8 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
                         <input
                             type='range'
                             min={0}
-                            max={500}
-                            step={5}
+                            max={100}
+                            step={1}
                             className='h-1 w-full cursor-pointer appearance-none rounded-xl accent-tan'
                             ref={rangeRef}
                             value={priceLocal}
