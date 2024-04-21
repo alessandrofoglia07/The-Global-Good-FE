@@ -9,13 +9,14 @@ import AboutUsPage from '@/pages/info/AboutUsPage';
 import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
 import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
+import ProductPage from '@/pages/ProductPage';
 
 const App: React.FC = () => {
     return (
         <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/shop' element={<ShopPage />} />
-            <Route path='/shop/:collection/:name' element={<></>} />
+            <Route path='/shop/:collection/:name' element={<ProductPage />} />
 
             {/* Info pages */}
             <Route path='/info/about-us' element={<AboutUsPage />} />
