@@ -22,7 +22,7 @@ const ProductPage: React.FC = () => {
         fetchProduct();
     }, []);
 
-    return <div>ProductPage</div>;
+    return <div>{JSON.stringify(product)}</div>;
 };
 
 export default ProductPage;
