@@ -10,9 +10,12 @@ import { LuArrowRightCircle as RightArrowIcon, LuArrowLeftCircle as LeftArrowIco
 import Footer from '@/components/Footer';
 import { values } from '@/assets/data/brandValues';
 import { motion } from 'framer-motion';
+import { Product } from '@/types';
+import axios from '@/api/axios';
+import ProductCard from '@/components/ProductCard';
 
 const MainPage: React.FC = () => {
-    const [bestSellers] = useState(Array(9).fill(null));
+    const [bestSellers, setBestSellers] = useState<Product[] | undefined[]>(Array(8).fill(undefined));
     const [windowWidth] = useWindowSize();
 
     const slider = useRef<Slider>(null);
@@ -24,6 +27,19 @@ const MainPage: React.FC = () => {
 
         return () => clearInterval(sliderNextInterval);
     }, []);
+
+    useEffect(() => {
+        fetchBestSellers();
+    }, []);
+
+    const fetchBestSellers = async () => {
+        try {
+            const res = await axios.get('/products?available=true&limit=8');
+            setBestSellers(res.data.products);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const settings: Settings = {
         arrows: false,
@@ -71,7 +87,7 @@ const MainPage: React.FC = () => {
                     <Slider ref={slider} {...settings}>
                         {bestSellers.map((_, i) => (
                             <div key={i} className='p-4'>
-                                <div className='aspect-square rounded-full bg-taupe' />
+                                <ProductCard product={bestSellers[i]} />
                             </div>
                         ))}
                     </Slider>
@@ -108,7 +124,7 @@ const MainPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <section id='discover' className='flex aspect-[2/1] h-fit max-h-[50rem] w-full items-center -md:flex-col'>
+            <section id='discover' className='flex aspect-[2/1] h-fit w-full items-center -md:flex-col'>
                 <div className='grid h-full place-items-center md:w-1/2'>
                     <div className='p-16 lg:p-20 xl:p-32'>
                         <motion.h2
@@ -128,7 +144,7 @@ const MainPage: React.FC = () => {
                         </motion.h3>
                         <a
                             href='/shop'
-                            className='rounded-lg border border-taupe bg-tan px-8 py-4 text-xl font-semibold uppercase tracking-wider text-taupe transition-colors hover:bg-darktan'>
+                            className='max-h-[50rem] rounded-lg border border-taupe bg-tan px-8 py-4 text-xl font-semibold uppercase tracking-wider text-taupe transition-colors hover:bg-darktan'>
                             Visit our shop
                         </a>
                     </div>
