@@ -7,6 +7,7 @@ import FiltersSelector from '@/components/FiltersSelector';
 import axios from '@/api/axios';
 import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
+import Spinner from '@/components/Spinner';
 
 const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +19,7 @@ const ShopPage: React.FC = () => {
         availability: searchParams.get('availability') === 'in-stock' ? 'in-stock' : null,
         countries: searchParams.get('country')?.split(' ') || []
     });
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>();
     const [filterOpen, setFilterOpen] = useState(false);
 
     const fetchProducts = async (params: URLSearchParams) => {
@@ -63,9 +64,11 @@ const ShopPage: React.FC = () => {
                 </div>
                 <main className='col-span-3 px-4 pb-32 -md:mt-16'>
                     <ul className='grid grid-cols-1 place-items-center gap-8 md:grid-cols-2 lg:grid-cols-3'>
-                        {products.map((product: Product, i) => (
-                            <ProductCard product={product} key={i} />
-                        ))}
+                        {!products ? (
+                            <Spinner className='col-span-1 mt-16 self-center md:col-span-2 md:mt-32 lg:col-span-3' />
+                        ) : (
+                            products.map((product: Product, i) => <ProductCard product={product} key={i} />)
+                        )}
                     </ul>
                 </main>
             </div>
