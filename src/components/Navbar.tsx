@@ -103,6 +103,9 @@ const Navbar: React.FC = () => {
                 </button>
                 <button onClick={handleCartOpen} aria-label='cart-button'>
                     <CartIcon className='text-2xl hover:text-taupe' />
+                    {cartItems.length > 0 && (
+                        <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>{cartItems.length}</span>
+                    )}
                 </button>
             </div>
             <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 h-screen w-full max-w-[30rem] border-l-2 bg-slate-100 px-8 pt-20 ${!cartOpen && 'hidden'}`}>

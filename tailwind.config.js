@@ -19,6 +19,9 @@ const config = {
                 tan: '#D2B48C',
                 darktan: '#C19A6B',
                 taupe: '#483C32'
+            },
+            fontSize: {
+                '2xs': '.625rem'
             }
         }
     },
