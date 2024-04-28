@@ -2,17 +2,20 @@ import { CartItem, ProductWithQuantity } from '@/types';
 import React from 'react';
 import LoadingImg from './LoadingImg';
 import { toImgURL } from '@/utils/toImgURL';
-import { FaMinus as MinusIcon } from 'react-icons/fa6';
+import { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa6';
 import { SetterOrUpdater } from 'recoil';
 
 interface Props {
     product: ProductWithQuantity;
     setProducts: React.Dispatch<React.SetStateAction<CartItem[]>> | SetterOrUpdater<CartItem[]>;
     handleUpdateCart: (product: ProductWithQuantity, quantity: number) => void;
+    suggested?: boolean;
+    addProduct?: (product: ProductWithQuantity) => void;
 }
 
-const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpdateCart }: Props) => {
-    const handleRemove = () => {
+const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpdateCart, suggested, addProduct }: Props) => {
+    const handleButtonClick = () => {
+        if (suggested) return addProduct && addProduct(product);
         if (product.quantity === 1) {
             setProducts((prev) => prev.filter((item) => item.name !== product.name));
             handleUpdateCart(product, 0);
@@ -40,9 +43,9 @@ const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpd
                     <p className='h-min tracking-tight text-gray-500'>$ {product.price}</p>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
-                    <p className='whitespace-nowrap text-lg font-bold tracking-tight'>✗ {product.quantity}</p>
-                    <button aria-label='remove-from-cart-btn' onClick={handleRemove} className='rounded-full border-2 border-taupe/50 p-1 transition-colors hover:border-taupe'>
-                        <MinusIcon />
+                    {!suggested && <p className='whitespace-nowrap text-lg font-bold tracking-tight'>✗ {product.quantity}</p>}
+                    <button aria-label='remove-from-cart-btn' onClick={handleButtonClick} className='rounded-full border-2 border-taupe/50 p-1 transition-colors hover:border-taupe'>
+                        {suggested ? <PlusIcon /> : <MinusIcon />}
                     </button>
                 </div>
             </div>

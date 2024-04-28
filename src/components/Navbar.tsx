@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Logo from './Logo';
 import { LuUser2 as UserIcon, LuSearch as SearchIcon, LuShoppingCart as CartIcon } from 'react-icons/lu';
 import { IoClose as XIcon } from 'react-icons/io5';
 import { useRecoilState } from 'recoil';
 import { cartState } from '@/store/cart';
 import axios from '@/api/axios';
-import { Product, ProductWithQuantity } from '@/types';
+import { CartItem, Product, ProductWithQuantity } from '@/types';
 import MinimizedProductCard from './MinimizedProductCard';
+import { AccountContext } from '@/context/Account';
+import Spinner from './Spinner';
 
 const Navbar: React.FC = () => {
+    const { getSession } = useContext(AccountContext)!;
+
+    const [state, setState] = useState<'loading' | 'loggedIn' | 'guest'>('loading');
     const [show, setShow] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [cartOpen, setCartOpen] = useState(false);
     const [cartItems, setCartItems] = useRecoilState(cartState);
     const [cartProducts, setCartProducts] = useState<ProductWithQuantity[]>([]);
+    const [suggestedProducts, setSuggestedProducts] = useState<ProductWithQuantity[]>([]);
 
     const controlNavbar = () => {
         if (lastScrollY === 0) {
@@ -32,6 +38,15 @@ const Navbar: React.FC = () => {
             setCartOpen(false);
         }, 300);
     };
+
+    useEffect(() => {
+        getSession()
+            .then((session) => {
+                if (session) setState('loggedIn');
+                else setState('guest');
+            })
+            .catch(() => setState('guest'));
+    }, []);
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
@@ -67,22 +82,38 @@ const Navbar: React.FC = () => {
         );
     };
 
-    const fetchProductsData = async () => {
-        if (!cartItems.length) return;
+    const fetchProductsData = async (newCartItem?: CartItem) => {
+        if (!cartItems.length && !newCartItem) return;
+        const newCartItems = newCartItem ? [...cartItems, newCartItem] : cartItems;
         const params = new URLSearchParams();
-        params.append('products', cartItems.map((item) => `${item.collection}:${item.name}`).join(',') || '');
+        params.append('products', newCartItems.map((item) => `${item.collection}:${item.name}`).join(',') || '');
         const res = await axios.get(`/product/multiple?${params.toString()}`);
         const { products } = res.data;
         const productsWithQuantity = products.map((product: Product) => {
-            const cartItem = cartItems.find((item) => item.name === product.name && item.collection === product.collection);
+            const cartItem = newCartItems.find((item) => item.name === product.name && item.collection === product.collection);
             return { ...product, quantity: cartItem!.quantity };
         });
         setCartProducts(productsWithQuantity);
     };
 
+    const fetchSuggestedProducts = async () => {
+        const res = await axios.get('/products?available=true&limit=2');
+        const { products } = res.data;
+        setSuggestedProducts(products);
+    };
+
     const handleCartOpen = () => {
         setCartOpen((prev) => !prev);
+        if (!cartItems.length) {
+            fetchSuggestedProducts();
+        }
         fetchProductsData();
+    };
+
+    const handleAddProduct = (product: ProductWithQuantity) => {
+        const newItem = { collection: product.collection, name: product.name, quantity: 1 };
+        setCartItems((prev) => [...prev, newItem]);
+        fetchProductsData(newItem);
     };
 
     return (
@@ -119,11 +150,48 @@ const Navbar: React.FC = () => {
                         <XIcon />
                     </button>
                 </div>
-                <div className='mt-8 grid grid-cols-2 place-items-center space-y-2'>
-                    {cartProducts.map((product: ProductWithQuantity) => (
-                        <MinimizedProductCard setProducts={setCartItems} handleUpdateCart={handleUpdateCart} key={product.name + Math.random()} product={product} />
-                    ))}
-                </div>
+                {state === 'loading' ? (
+                    <Spinner />
+                ) : state === 'loggedIn' ? (
+                    <>
+                        {cartProducts.length === 0 && (
+                            <div className='flex w-full flex-col items-center'>
+                                <h3 className='mt-8 text-lg font-semibold text-taupe'>Your cart is empty!</h3>
+                                <h4 className='text-taupe'>Here are some products you may like:</h4>
+                                <div className='mt-4 grid grid-cols-2 place-items-center space-y-2'>
+                                    {suggestedProducts.map((product: ProductWithQuantity) => (
+                                        <MinimizedProductCard
+                                            setProducts={setCartItems}
+                                            handleUpdateCart={handleUpdateCart}
+                                            key={product.name + Math.random()}
+                                            product={product}
+                                            suggested={true}
+                                            addProduct={handleAddProduct}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        <div className='mt-8 grid grid-cols-2 place-items-center space-y-2'>
+                            {cartProducts.map((product: ProductWithQuantity) => (
+                                <MinimizedProductCard setProducts={setCartItems} handleUpdateCart={handleUpdateCart} key={product.name + Math.random()} product={product} />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <div className='flex w-full flex-col items-center'>
+                        <h3 className='mt-20 text-xl font-semibold text-taupe'>You need to log in to access cart.</h3>
+                        <a className='mt-7 w-2/3 rounded-md bg-darktan px-4 py-2 text-center font-semibold text-taupe' href='/account/signin'>
+                            Log in
+                        </a>
+                        <p className='mt-5 text-taupe'>
+                            Don't have an account?{' '}
+                            <a href='/account/register' className='underline'>
+                                Register now!
+                            </a>
+                        </p>
+                    </div>
+                )}
             </aside>
         </nav>
     );
