@@ -9,11 +9,14 @@ import { toImgURL } from '@/utils/toImgURL';
 import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
 import shuffle from '@/utils/shuffleArr';
+import { cartState } from '@/store/cart';
+import { useRecoilState } from 'recoil';
 
 const ProductPage: React.FC = () => {
     const { collection, name } = useParams<{ collection: string; name: string }>();
     const [w] = useWindowSize();
 
+    const [cart, setCart] = useRecoilState(cartState);
     const [product, setProduct] = useState<undefined | Product>(undefined);
     const [moreFromCollection, setMoreFromCollection] = useState<undefined | Product[]>(undefined);
 
@@ -35,6 +38,15 @@ const ProductPage: React.FC = () => {
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const handleAddToCart = () => {
+        if (!product) return;
+        if (cart.some((item) => item.collection === product.collection && item.name === product.name)) {
+            setCart(cart.map((item) => (item.collection === product.collection && item.name === product.name ? { ...item, quantity: item.quantity + 1 } : item)));
+            return;
+        }
+        setCart([...cart, { collection: product.collection, name: product.name, quantity: 1 }]);
     };
 
     useEffect(() => {
@@ -73,7 +85,9 @@ const ProductPage: React.FC = () => {
                                         <h1 className='mb-4 border-b-2 pb-2 text-4xl font-bold tracking-tight'>{product.name}</h1>
                                         <h2 className='text-xl font-semibold'>$ {product.price}</h2>
                                         <div className='mb-8 mt-4 flex flex-col gap-4'>
-                                            <button className='w-full rounded-md bg-darktan px-4 py-3 font-bold uppercase tracking-wide text-white'>Add to Cart</button>
+                                            <button onClick={handleAddToCart} className='w-full rounded-md bg-darktan px-4 py-3 font-bold uppercase tracking-wide text-white'>
+                                                Add to Cart
+                                            </button>
                                             <p className='text-lg text-taupe/60'>
                                                 {product.availability > 100 ? (
                                                     <span className='select-none rounded-md bg-green-400 px-3 py-2 font-bold text-white'>Available ✓</span>
@@ -89,7 +103,7 @@ const ProductPage: React.FC = () => {
                                     <>
                                         <div className='mb-4 h-8 w-2/3 animate-pulse rounded-md bg-taupe/10' />
                                         <div className='mb-4 h-8 w-24 animate-pulse rounded-md bg-taupe/10' />
-                                        <button disabled className='mb-4 w-full rounded-md bg-taupe/10 px-4 py-3 font-bold uppercase tracking-wide text-white'>
+                                        <button onClick={handleAddToCart} disabled className='mb-4 w-full rounded-md bg-taupe/10 px-4 py-3 font-bold uppercase tracking-wide text-white'>
                                             Add to Cart
                                         </button>
                                         <div className='mb-4 h-8 w-1/2 animate-pulse rounded-md bg-taupe/10' />

@@ -18,3 +18,13 @@ export interface Filters {
     availability: 'in-stock' | null;
     countries: string[];
 }
+
+export interface CartItem {
+    collection: string;
+    name: string;
+    quantity: number;
+}
+
+export interface ProductWithQuantity extends Product {
+    quantity: number;
+}

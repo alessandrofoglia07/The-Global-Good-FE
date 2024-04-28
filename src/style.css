@@ -17,7 +17,11 @@
 
 @layer utilities {
     .animate-slide-in {
-        animation: slide-in 0.2s ease-in-out;
+        animation: slide-in 0.2s ease-in-out forwards;
+    }
+
+    .animate-slide-out {
+        animation: slide-out 0.2s ease-in-out forwards;
     }
 }
 
@@ -28,5 +32,15 @@
 
     100% {
         transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
     }
 }
