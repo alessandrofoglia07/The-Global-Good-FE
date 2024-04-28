@@ -40,7 +40,7 @@ const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpd
                     <p className='h-min tracking-tight text-gray-500'>$ {product.price}</p>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
-                    <p className='text-lg font-bold tracking-tight'>x {product.quantity}</p>
+                    <p className='whitespace-nowrap text-lg font-bold tracking-tight'>✗ {product.quantity}</p>
                     <button aria-label='remove-from-cart-btn' onClick={handleRemove} className='rounded-full border-2 border-taupe/50 p-1 transition-colors hover:border-taupe'>
                         <MinusIcon />
                     </button>

@@ -104,7 +104,11 @@ const Navbar: React.FC = () => {
                 <button onClick={handleCartOpen} aria-label='cart-button'>
                     <CartIcon className='text-2xl hover:text-taupe' />
                     {cartItems.length > 0 && (
-                        <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>{cartItems.length}</span>
+                        <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>
+                            {cartItems.reduce((prev, curr) => {
+                                return prev + curr.quantity;
+                            }, 0)}
+                        </span>
                     )}
                 </button>
             </div>

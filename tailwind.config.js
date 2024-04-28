@@ -21,7 +21,7 @@ const config = {
                 taupe: '#483C32'
             },
             fontSize: {
-                '2xs': '.625rem'
+                '2xs': '.725rem'
             }
         }
     },
