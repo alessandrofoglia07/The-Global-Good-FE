@@ -1,6 +1,5 @@
 import { CartItem, ProductWithQuantity } from '@/types';
 import React from 'react';
-import LoadingImg from './LoadingImg';
 import { toImgURL } from '@/utils/toImgURL';
 import { FaMinus as MinusIcon, FaPlus as PlusIcon } from 'react-icons/fa6';
 import { SetterOrUpdater } from 'recoil';
@@ -34,7 +33,7 @@ const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpd
 
     return (
         <>
-            <LoadingImg src={toImgURL(product.img)} alt={product.name} containerClassName='w-2/3' className='h-full' />
+            <img src={toImgURL(product.img)} alt={product.name} className='w-2/3' />
             <div className='flex items-center gap-2'>
                 <div className='flex h-full w-full flex-col justify-center px-2'>
                     <a href={`/shop/${product.collection}/${product.name}`} className='h-min text-lg font-bold tracking-tight'>

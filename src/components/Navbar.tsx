@@ -21,6 +21,25 @@ const Navbar: React.FC = () => {
     const [cartProducts, setCartProducts] = useState<ProductWithQuantity[]>([]);
     const [suggestedProducts, setSuggestedProducts] = useState<ProductWithQuantity[]>([]);
 
+    const updateCartMenuMainHeight = () => {
+        const cartMenu = document.getElementById('cart-menu');
+        if (cartMenu) {
+            const cartMenuHeader = document.getElementById('cart-menu-header');
+            const cartMenuFooter = document.getElementById('cart-menu-footer');
+            if (cartMenuHeader && cartMenuFooter) {
+                const cartMenuHeaderHeight = cartMenuHeader.offsetHeight;
+                const cartMenuFooterHeight = cartMenuFooter.offsetHeight;
+                document.getElementById('cart-menu-main')!.style.maxHeight = `${cartMenu.offsetHeight - cartMenuHeaderHeight - cartMenuFooterHeight - 16 * 5}px`;
+            }
+        }
+    };
+
+    useEffect(() => {
+        updateCartMenuMainHeight();
+        window.addEventListener('resize', updateCartMenuMainHeight);
+        return () => window.removeEventListener('resize', updateCartMenuMainHeight);
+    }, [cartOpen, cartProducts]);
+
     const controlNavbar = () => {
         if (lastScrollY === 0) {
             setShow(true);
@@ -34,6 +53,7 @@ const Navbar: React.FC = () => {
     const handleCartClose = () => {
         const cartMenu = document.getElementById('cart-menu');
         if (cartMenu) cartMenu.classList.add('animate-slide-out');
+        document.body.style.overflow = 'auto';
         setTimeout(() => {
             setCartOpen(false);
         }, 300);
@@ -104,6 +124,7 @@ const Navbar: React.FC = () => {
 
     const handleCartOpen = () => {
         setCartOpen((prev) => !prev);
+        document.body.style.overflow = 'hidden';
         if (!cartItems.length) {
             fetchSuggestedProducts();
         }
@@ -117,34 +138,36 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav
-            className={`fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between bg-zinc-100 transition-transform duration-300 ${show ? 'translate-y-0' : '-translate-y-20'}`}>
-            <div id='left' className='px-4'>
-                <a href='/'>
-                    <Logo />
-                </a>
-            </div>
-            <div id='center' className='absolute left-1/2 flex h-20 -translate-x-1/2 items-center justify-center'></div>
-            <div id='right' className='flex items-center gap-4 px-8'>
-                <a href='/account' aria-label='link-to-account-page'>
-                    <UserIcon className='text-2xl hover:text-taupe' />
-                </a>
-                <button onClick={handleSearch} aria-label='search-button'>
-                    <SearchIcon className='text-2xl hover:text-taupe' />
-                </button>
-                <button onClick={handleCartOpen} aria-label='cart-button'>
-                    <CartIcon className='text-2xl hover:text-taupe' />
-                    {cartItems.length > 0 && (
-                        <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>
-                            {cartItems.reduce((prev, curr) => {
-                                return prev + curr.quantity;
-                            }, 0)}
-                        </span>
-                    )}
-                </button>
-            </div>
-            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 h-screen w-full max-w-[30rem] border-l-2 bg-slate-100 px-8 pt-20 ${!cartOpen && 'hidden'}`}>
-                <div className='flex justify-between'>
+        <>
+            <nav
+                className={`fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between bg-zinc-100 transition-transform duration-300 ${show ? 'translate-y-0' : '-translate-y-20'}`}>
+                <div id='left' className='px-4'>
+                    <a href='/'>
+                        <Logo />
+                    </a>
+                </div>
+                <div id='center' className='absolute left-1/2 flex h-20 -translate-x-1/2 items-center justify-center'></div>
+                <div id='right' className='flex items-center gap-4 px-8'>
+                    <a href='/account' aria-label='link-to-account-page'>
+                        <UserIcon className='text-2xl hover:text-taupe' />
+                    </a>
+                    <button onClick={handleSearch} aria-label='search-button'>
+                        <SearchIcon className='text-2xl hover:text-taupe' />
+                    </button>
+                    <button onClick={handleCartOpen} aria-label='cart-button'>
+                        <CartIcon className='text-2xl hover:text-taupe' />
+                        {cartItems.length > 0 && (
+                            <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>
+                                {cartItems.reduce((prev, curr) => {
+                                    return prev + curr.quantity;
+                                }, 0)}
+                            </span>
+                        )}
+                    </button>
+                </div>
+            </nav>
+            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 z-50 h-screen w-full max-w-[30rem] border-l-2 bg-slate-50 pt-20 ${!cartOpen && 'hidden'}`}>
+                <div id='cart-menu-header' className='flex justify-between px-8 pb-4'>
                     <h2 className='text-2xl font-bold tracking-tight text-taupe/80'>Your Cart</h2>
                     <button onClick={handleCartClose} className='grid place-items-center text-4xl text-taupe/80'>
                         <XIcon />
@@ -172,10 +195,24 @@ const Navbar: React.FC = () => {
                                 </div>
                             </div>
                         )}
-                        <div className='mt-8 grid grid-cols-2 place-items-center space-y-2'>
-                            {cartProducts.map((product: ProductWithQuantity) => (
-                                <MinimizedProductCard setProducts={setCartItems} handleUpdateCart={handleUpdateCart} key={product.name + Math.random()} product={product} />
-                            ))}
+                        <div>
+                            <div id='cart-menu-main' className='overflow-auto px-4'>
+                                <div className='mt-8 grid grid-cols-2 place-items-center space-y-2'>
+                                    {cartProducts.map((product: ProductWithQuantity) => (
+                                        <MinimizedProductCard setProducts={setCartItems} handleUpdateCart={handleUpdateCart} key={product.name + Math.random()} product={product} />
+                                    ))}
+                                </div>
+                            </div>
+                            <div id='cart-menu-footer' className='absolute bottom-0 left-0 h-1/4 w-full border-t bg-blue-50 py-8 pl-16 pr-8'>
+                                <h3 className='text-xl text-taupe'>
+                                    <span className='font-semibold'>Subtotal</span>
+                                    <span className='float-right font-bold'>$ {cartProducts.reduce((prev, curr) => prev + curr.price * curr.quantity, 0).toFixed(2)}</span>
+                                </h3>
+                                <h4 className='mb-4 mt-2 text-taupe/80'>Shipping, taxes, and discounts calculated at checkout.</h4>
+                                <a href='/checkout' className='w-full rounded-md bg-darktan px-4 py-2 text-center font-semibold text-white'>
+                                    Proceed to checkout
+                                </a>
+                            </div>
                         </div>
                     </>
                 ) : (
@@ -193,7 +230,7 @@ const Navbar: React.FC = () => {
                     </div>
                 )}
             </aside>
-        </nav>
+        </>
     );
 };
 
