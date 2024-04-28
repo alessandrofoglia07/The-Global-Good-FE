@@ -1,6 +1,7 @@
 import React from 'react';
 import { Product } from '@/types';
 import { toImgURL } from '@/utils/toImgURL';
+import LoadingImg from './LoadingImg';
 
 interface Props {
     product: Product | undefined;
@@ -24,7 +25,7 @@ const ProductCard: React.FC<Props> = ({ product }: Props) => {
     return (
         <div className='flex h-max w-full max-w-96 flex-col items-center rounded-lg p-6 focus-within:outline-none'>
             <a href={`/shop/${product.collection}/${product.name}`}>
-                <img draggable='false' src={toImgURL(product.img)} alt={product.name} className='aspect-square h-64 rounded-t-lg object-contain' />
+                <LoadingImg src={toImgURL(product.img)} alt={product.name} className='aspect-square h-64 rounded-t-lg object-contain' />
             </a>
             <a href={`/shop/${product.collection}/${product.name}`} className='self-start text-left text-lg font-bold tracking-tight text-taupe/80'>
                 {product.name}

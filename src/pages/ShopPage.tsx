@@ -28,8 +28,6 @@ const ShopPage: React.FC = () => {
     };
 
     useEffect(() => {
-        console.log('fetching products');
-
         const queryParams = new URLSearchParams();
         if (filters.collection) queryParams.set('collection', collections.find((collection) => collection.title === filters.collection)?.id || '');
         if (filters.usePriceFilter) queryParams.set('maxPrice', filters.maxPrice.toString());
@@ -62,8 +60,8 @@ const ShopPage: React.FC = () => {
                         Filter
                     </button>
                 </div>
-                <main className='col-span-3 px-4 pb-32 -md:mt-16'>
-                    <ul className='grid grid-cols-1 place-items-center gap-8 md:grid-cols-2 lg:grid-cols-3'>
+                <main className='col-span-3 px-4 pb-32 -md:mt-4'>
+                    <ul className='grid place-items-center gap-8 sm:grid-cols-2 lg:grid-cols-3'>
                         {!products ? (
                             <Spinner className='col-span-1 mt-16 self-center md:col-span-2 md:mt-32 lg:col-span-3' />
                         ) : (
