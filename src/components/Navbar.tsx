@@ -104,16 +104,25 @@ const Navbar: React.FC = () => {
 
     const fetchProductsData = async (newCartItem?: CartItem) => {
         if (!cartItems.length && !newCartItem) return;
-        const newCartItems = newCartItem ? [...cartItems, newCartItem] : cartItems;
-        const params = new URLSearchParams();
-        params.append('products', newCartItems.map((item) => `${item.collection}:${item.name}`).join(',') || '');
-        const res = await axios.get(`/product/multiple?${params.toString()}`);
-        const { products } = res.data;
-        const productsWithQuantity = products.map((product: Product) => {
-            const cartItem = newCartItems.find((item) => item.name === product.name && item.collection === product.collection);
-            return { ...product, quantity: cartItem!.quantity };
-        });
-        setCartProducts(productsWithQuantity);
+        const currState = state;
+
+        try {
+            setState('loading');
+            const newCartItems = newCartItem ? [...cartItems, newCartItem] : cartItems;
+            const params = new URLSearchParams();
+            params.append('products', newCartItems.map((item) => `${item.collection}:${item.name}`).join(',') || '');
+            const res = await axios.get(`/product/multiple?${params.toString()}`);
+            const { products } = res.data;
+            const productsWithQuantity = products.map((product: Product) => {
+                const cartItem = newCartItems.find((item) => item.name === product.name && item.collection === product.collection);
+                return { ...product, quantity: cartItem!.quantity };
+            });
+            setCartProducts(productsWithQuantity);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setState(currState);
+        }
     };
 
     const fetchSuggestedProducts = async () => {
@@ -157,7 +166,7 @@ const Navbar: React.FC = () => {
                     <button onClick={handleCartOpen} aria-label='cart-button'>
                         <CartIcon className='text-2xl hover:text-taupe' />
                         {cartItems.length > 0 && (
-                            <span className='text-2xs absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 font-bold text-white'>
+                            <span className='absolute -translate-y-7 translate-x-1 rounded-full bg-red-500 px-1 text-2xs font-bold text-white'>
                                 {cartItems.reduce((prev, curr) => {
                                     return prev + curr.quantity;
                                 }, 0)}

@@ -14,7 +14,7 @@ const LoadingImg: React.FC<Props> = ({ src, alt, className, containerClassName }
     return (
         <>
             <div className={loading ? 'block' : 'hidden'}>
-                <Spinner className={className} />
+                <Spinner />
             </div>
             <div className={loading ? 'hidden' : `block` + ' h-min ' + containerClassName}>
                 <img draggable='false' className={className} src={src} alt={alt} onLoad={() => setLoading(false)} />
