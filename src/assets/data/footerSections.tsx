@@ -11,7 +11,6 @@ export const footerSections: FooterSection[] = [
     {
         title: 'Company',
         links: [
-            { title: 'About us', href: '/info/about-us' },
             { title: 'Shop', href: '/shop' },
             { title: 'Privacy Policy', href: '/info/privacy-policy' },
             { title: 'Terms & Conditions', href: '/info/terms-conditions' }
@@ -26,7 +25,7 @@ export const footerSections: FooterSection[] = [
                         <InstagramIcon className='text-xl' /> Instagram
                     </>
                 ),
-                href: 'https://www.instagram.com/'
+                href: ''
             },
             {
                 title: (
@@ -34,7 +33,7 @@ export const footerSections: FooterSection[] = [
                         <FacebookIcon className='text-xl' /> Facebook
                     </>
                 ),
-                href: 'https://www.facebook.com/'
+                href: ''
             },
             {
                 title: (
@@ -42,7 +41,7 @@ export const footerSections: FooterSection[] = [
                         <XIcon className='text-xl' /> Twitter
                     </>
                 ),
-                href: 'https://x.com/'
+                href: ''
             }
         ]
     },

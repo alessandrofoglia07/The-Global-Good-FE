@@ -1,23 +1,15 @@
 import React from 'react';
 import { footerSections } from '@/assets/data/footerSections';
-import FooterNewsletter from './FooterNewsletter';
-import useWindowSize from '@/hooks/useWindowSize';
 import Logo from './Logo';
 
 const Footer: React.FC = () => {
-    const [windowW] = useWindowSize();
-
-    const handleSubscribeNewsletter = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const email = (e.currentTarget[0] as HTMLInputElement).value;
-        // TODO: Subscribe to newsletter
-        console.log('Subscribed to newsletter with email:', email);
-    };
-
     return (
         <footer className='grid w-full place-items-center bg-taupe pb-40 pt-20'>
-            <div className='flex h-full w-full flex-col pl-[5%] lg:grid lg:grid-cols-5 lg:px-[15%] -lg:gap-8'>
-                {windowW > 1024 ? <FooterNewsletter onSubscribe={handleSubscribeNewsletter} /> : <Logo className='-mb-4 w-fit !text-3xl text-slate-100 *:!text-4xl' />}
+            <div className='flex h-full w-full flex-col pl-[5%] md:grid md:grid-cols-2 lg:grid-cols-5 lg:px-[10%] xl:px-[15%] -lg:gap-8'>
+                <div className='col-span-2 border-slate-100 px-8 lg:border-r lg:px-16'>
+                    <Logo className='w-fit text-3xl text-slate-100 *:text-4xl' />
+                    <h3 className='mt-4 text-lg text-slate-100'>Help us make the world a better place by sharing our mission with your friends and family.</h3>
+                </div>
                 {footerSections.map((section, i) => (
                     <div className='pl-8' key={i}>
                         <h1 className='mt-2 text-2xl font-bold tracking-tight text-slate-100'>{section.title}</h1>
@@ -32,7 +24,6 @@ const Footer: React.FC = () => {
                         </ul>
                     </div>
                 ))}
-                {windowW < 1024 && <FooterNewsletter onSubscribe={handleSubscribeNewsletter} />}
             </div>
         </footer>
     );

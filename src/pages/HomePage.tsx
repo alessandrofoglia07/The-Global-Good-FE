@@ -126,7 +126,7 @@ const MainPage: React.FC = () => {
             </section>
             <section id='discover' className='flex aspect-[2/1] h-fit w-full items-center -md:flex-col'>
                 <div className='grid h-fit w-screen place-items-center md:w-1/2'>
-                    <div className='px-8 py-16 lg:p-20 xl:p-32'>
+                    <div className='max-w-[100vw] px-8 py-16 lg:p-20 xl:p-32'>
                         <motion.h2
                             initial={{ translateY: -50, opacity: 0.5 }}
                             whileInView={{ translateY: 0, opacity: 1, transition: { duration: 0.8 } }}
