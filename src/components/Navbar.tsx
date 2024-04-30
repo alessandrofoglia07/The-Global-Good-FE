@@ -9,6 +9,7 @@ import { CartItem, Product, ProductWithQuantity } from '@/types';
 import MinimizedProductCard from './MinimizedProductCard';
 import { AccountContext } from '@/context/Account';
 import Spinner from './Spinner';
+import LoginRequirer from './LoginRequirer';
 
 const Navbar: React.FC = () => {
     const { getSession } = useContext(AccountContext)!;
@@ -218,25 +219,12 @@ const Navbar: React.FC = () => {
                                     <span className='float-right font-bold'>$ {cartProducts.reduce((prev, curr) => prev + curr.price * curr.quantity, 0).toFixed(2)}</span>
                                 </h3>
                                 <h4 className='mb-4 mt-2 text-taupe/80'>Shipping, taxes, and discounts calculated at checkout.</h4>
-                                <a href='/checkout' className='w-full rounded-md bg-darktan px-4 py-2 text-center font-semibold text-white'>
-                                    Proceed to checkout
-                                </a>
+                                <a className='w-full cursor-pointer rounded-md bg-darktan px-4 py-2 text-center font-semibold text-white'>Proceed to checkout</a>
                             </div>
                         </div>
                     </>
                 ) : (
-                    <div className='flex w-full flex-col items-center'>
-                        <h3 className='mt-20 text-xl font-semibold text-taupe'>You need to log in to access cart.</h3>
-                        <a className='mt-7 w-2/3 rounded-md bg-darktan px-4 py-2 text-center font-semibold text-taupe' href='/account/signin'>
-                            Log in
-                        </a>
-                        <p className='mt-5 text-taupe'>
-                            Don't have an account?{' '}
-                            <a href='/account/register' className='underline'>
-                                Register now!
-                            </a>
-                        </p>
-                    </div>
+                    <LoginRequirer text='You need to log in to access cart.' className='mt-20' />
                 )}
             </aside>
         </>
