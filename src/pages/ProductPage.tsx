@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '@/api/axios';
-import { Product } from '@/types';
+import { Product, Review } from '@/types';
 import Navbar from '@/components/Navbar';
 import { toCollectionName } from '@/utils/toCollectionName';
 import useWindowSize from '@/hooks/useWindowSize';
@@ -11,19 +11,50 @@ import Footer from '@/components/Footer';
 import shuffle from '@/utils/shuffleArr';
 import { cartState } from '@/store/cart';
 import { useRecoilState } from 'recoil';
+import RatingButton from '@/components/RatingButton';
+import { reviewSchema } from '@/utils/schemas/reviewSchemas';
+import authAxios from '@/api/authAxios';
+import Rating from '@/components/Rating';
+import { AccountContext } from '@/context/Account';
+import Spinner from '@/components/Spinner';
+import LoginRequirer from '@/components/LoginRequirer';
+
+interface WritingReview {
+    title: string;
+    rating: number;
+    text: string;
+}
 
 const ProductPage: React.FC = () => {
     const { collection, name } = useParams<{ collection: string; name: string }>();
     const [w] = useWindowSize();
+    const { getSession } = useContext(AccountContext);
 
     const [cart, setCart] = useRecoilState(cartState);
     const [product, setProduct] = useState<undefined | Product>(undefined);
     const [moreFromCollection, setMoreFromCollection] = useState<undefined | Product[]>(undefined);
+    const [reviews, setReviews] = useState<undefined | Review[]>(undefined);
+    const [writingReview, setWritingReview] = useState<WritingReview>({
+        title: '',
+        rating: 5,
+        text: ''
+    });
+    const [errText, setErrText] = useState<undefined | string>(undefined);
+    const [auth, setAuth] = useState<'loading' | boolean>('loading');
 
     const fetchProduct = async () => {
         try {
             const res = await axios.get(`/product/${collection}/${name}`);
             setProduct(res.data.product);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const fetchReviews = async () => {
+        try {
+            const res = await axios.get(`/product/${collection}/${name}/review`);
+            setReviews(res.data);
         } catch (err) {
             console.error(err);
         }
@@ -50,9 +81,62 @@ const ProductPage: React.FC = () => {
     };
 
     useEffect(() => {
+        getSession()
+            .then((session) => {
+                if (session) setAuth(true);
+                else setAuth(false);
+            })
+            .catch(() => setAuth(false));
+    }, []);
+
+    useEffect(() => {
         fetchProduct();
         fetchMoreFromCollection();
+        fetchReviews();
     }, []);
+
+    const handleReviewChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        if (name === 'title') {
+            if (value.length < 50) setWritingReview({ ...writingReview, title: value });
+        } else if (name === 'text') {
+            if (value.length < 500) setWritingReview({ ...writingReview, text: value });
+        }
+    };
+
+    const handleReviewRatingChange = (rating: number) => {
+        setWritingReview({ ...writingReview, rating });
+    };
+
+    const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const val = reviewSchema.safeParse(writingReview);
+
+            if (!val.success) {
+                setErrText(val.error.errors[0]?.message || 'Invalid review data');
+                return;
+            }
+
+            setErrText(undefined);
+            await authAxios.post(`/product/${collection}/${name}/review`, {
+                rating: writingReview.rating,
+                reviewTitle: writingReview.title,
+                reviewText: writingReview.text
+            });
+            fetchReviews();
+            setWritingReview({ title: '', rating: 5, text: '' });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleShowFullText = (e: React.MouseEvent<HTMLSpanElement>) => {
+        const target = e.target as HTMLSpanElement;
+        target.classList.toggle('overflow-hidden');
+        target.classList.toggle('text-ellipsis');
+        target.classList.toggle('text-nowrap');
+    };
 
     return (
         <div id='ProductPage'>
@@ -85,7 +169,9 @@ const ProductPage: React.FC = () => {
                                         <h1 className='mb-4 border-b-2 pb-2 text-4xl font-bold tracking-tight'>{product.name}</h1>
                                         <h2 className='text-xl font-semibold'>$ {product.price}</h2>
                                         <div className='mb-8 mt-4 flex flex-col gap-4'>
-                                            <button onClick={handleAddToCart} className='w-full rounded-md bg-darktan px-4 py-3 font-bold uppercase tracking-wide text-white'>
+                                            <button
+                                                onClick={handleAddToCart}
+                                                className='w-full rounded-md bg-darktan/90 px-4 py-3 font-bold uppercase tracking-wide text-white transition-colors hover:bg-darktan'>
                                                 Add to Cart
                                             </button>
                                             <p className='text-lg text-taupe/60'>
@@ -158,8 +244,86 @@ const ProductPage: React.FC = () => {
                     )}
                 </div>
                 <div className='h-px w-full bg-taupe/20' />
+                {product && (
+                    <>
+                        <div className='w-full py-8 -md:px-8'>
+                            <h2 className='w-full px-8 text-center text-3xl font-bold text-taupe/80'>Our Customers' Thoughts</h2>
+                            <div className='mx-auto mt-16 max-w-[40vw] border-b border-taupe/20 pb-8'>
+                                {reviews && reviews.length > 0 ? (
+                                    reviews.map((review) => (
+                                        <div key={review.reviewId} className='mb-4'>
+                                            <h3 className='flex items-center justify-between gap-4 text-lg font-semibold text-taupe'>
+                                                <span className='flex max-w-[calc(3/4*100%)] items-center gap-4'>
+                                                    <span onClick={handleShowFullText} className='cursor-default overflow-hidden text-ellipsis text-nowrap'>
+                                                        {review.reviewTitle}
+                                                    </span>{' '}
+                                                    <Rating rating={review.rating} />
+                                                </span>
+                                                <span className='text-base text-taupe/50'>@{review.username}</span>
+                                            </h3>
+                                            <p className='mt-1 text-lg text-taupe/80'>{review.reviewText}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <h4 className='pb-8 text-center text-2xl text-taupe'>
+                                        No one has already shared their idea on this.
+                                        <br /> You can be{' '}
+                                        <a className='underline' href='#comment-on-product'>
+                                            the first
+                                        </a>
+                                        !
+                                    </h4>
+                                )}
+                            </div>
+                            <div className='mx-auto max-w-[40rem]'>
+                                {auth === 'loading' ? (
+                                    <>
+                                        <Spinner />
+                                    </>
+                                ) : auth ? (
+                                    <>
+                                        <h2 id='comment-on-product' className='pt-16 text-xl text-taupe'>
+                                            Comment on {product.name}
+                                        </h2>
+                                        <form className='mt-8' onSubmit={handleReviewSubmit}>
+                                            <div className='flex w-full flex-col gap-4'>
+                                                <div className='flex w-full items-center justify-between'>
+                                                    <input
+                                                        className='w-2/3 rounded-md bg-inherit text-lg font-semibold focus:outline-none'
+                                                        type='text'
+                                                        placeholder='Title'
+                                                        value={writingReview.title}
+                                                        onChange={handleReviewChange}
+                                                        name='title'
+                                                    />
+                                                    <RatingButton init={5} onChange={handleReviewRatingChange} />
+                                                </div>
+                                                <textarea
+                                                    className='h-32 w-full resize-none rounded-md bg-inherit text-lg text-taupe focus:outline-none'
+                                                    placeholder='Write your comment here'
+                                                    name='text'
+                                                    value={writingReview.text}
+                                                    onChange={handleReviewChange}
+                                                />
+                                                <p className='text-red-400'>{errText}</p>
+                                                <button
+                                                    className='mb-4 w-full rounded-md bg-darktan/90 px-4 py-3 font-bold uppercase tracking-wide text-white transition-colors hover:bg-darktan'
+                                                    type='submit'>
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </>
+                                ) : (
+                                    <LoginRequirer className='mt-8' id='comment-on-product' text='Sign in to comment on this product' />
+                                )}
+                            </div>
+                        </div>
+                        <div className='h-px w-full bg-taupe/20' />
+                    </>
+                )}
                 <div className='w-full py-8'>
-                    <h2 className='w-full px-8 text-center text-3xl font-bold text-taupe/80'>
+                    <h2 className='mt-4 w-full px-8 text-center text-3xl font-bold text-taupe/80'>
                         More from {product?.collection ? toCollectionName(product.collection) : toCollectionName(collection || '')}
                     </h2>
                     <div className='grid place-items-center gap-8 px-8 py-8 sm:grid-cols-2 lg:grid-cols-4'>

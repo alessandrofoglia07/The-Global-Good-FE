@@ -11,6 +11,16 @@ export interface Product {
     availability: number;
 }
 
+export interface Review {
+    productName: string;
+    reviewId: string;
+    username: string;
+    rating: number;
+    reviewTitle: string;
+    reviewText: string;
+    timestamp: number;
+}
+
 export interface Filters {
     collection: string | null;
     usePriceFilter: boolean;
