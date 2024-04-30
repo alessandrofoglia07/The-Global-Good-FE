@@ -132,6 +132,10 @@ const Navbar: React.FC = () => {
         setSuggestedProducts(products);
     };
 
+    useEffect(() => {
+        if (!cartItems.length) fetchSuggestedProducts();
+    }, [cartItems]);
+
     const handleCartOpen = () => {
         setCartOpen((prev) => !prev);
         document.body.style.overflow = 'hidden';
@@ -176,7 +180,7 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
             </nav>
-            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 z-50 h-screen w-full max-w-[30rem] border-l-2 bg-slate-50 pt-20 ${!cartOpen && 'hidden'}`}>
+            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 z-50 h-screen w-full max-w-[30rem] border-l-2 bg-slate-50 pr-4 pt-20 ${!cartOpen && 'hidden'}`}>
                 <div id='cart-menu-header' className='flex justify-between px-8 pb-4'>
                     <h2 className='text-2xl font-bold tracking-tight text-taupe/80'>Your Cart</h2>
                     <button onClick={handleCartClose} className='grid place-items-center text-4xl text-taupe/80'>
@@ -184,7 +188,7 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
                 {state === 'loading' ? (
-                    <Spinner />
+                    <Spinner className='mx-auto mt-20' />
                 ) : state === 'loggedIn' ? (
                     <>
                         {cartProducts.length === 0 && (
