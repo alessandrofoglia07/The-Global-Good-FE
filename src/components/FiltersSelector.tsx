@@ -6,6 +6,7 @@ import countries from '@/assets/data/countries.json';
 import { SetURLSearchParams } from 'react-router-dom';
 import useWindowSize from '@/hooks/useWindowSize';
 import { IoClose as XIcon } from 'react-icons/io5';
+import { debounce } from '@/utils/debounce';
 
 interface Props {
     searchParams: URLSearchParams;
@@ -79,16 +80,6 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set('maxprice', rangeRef.current.value);
         setSearchParams(newParams.toString());
-
-        const debounce = <T extends unknown[]>(func: (...args: T) => void, delay: number) => {
-            let timeoutId: number;
-            return (...args: T) => {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    func(...args);
-                }, delay);
-            };
-        };
 
         debounce(() => {
             setFilters((prev) => ({ ...prev, maxPrice: parseInt(rangeRef.current!.value) }));

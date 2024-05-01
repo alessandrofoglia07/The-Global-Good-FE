@@ -10,6 +10,7 @@ import MinimizedProductCard from './MinimizedProductCard';
 import { AccountContext } from '@/context/Account';
 import Spinner from './Spinner';
 import LoginRequirer from './LoginRequirer';
+import SearchModal from './SearchModal';
 
 const Navbar: React.FC = () => {
     const { getSession } = useContext(AccountContext)!;
@@ -21,6 +22,7 @@ const Navbar: React.FC = () => {
     const [cartItems, setCartItems] = useRecoilState(cartState);
     const [cartProducts, setCartProducts] = useState<ProductWithQuantity[]>([]);
     const [suggestedProducts, setSuggestedProducts] = useState<ProductWithQuantity[]>([]);
+    const [searchOpen, setSearchOpen] = useState(false);
 
     const updateCartMenuMainHeight = () => {
         const cartMenu = document.getElementById('cart-menu');
@@ -86,8 +88,7 @@ const Navbar: React.FC = () => {
     }, [lastScrollY]);
 
     const handleSearch = () => {
-        // TODO: implement search
-        console.log('search');
+        setSearchOpen(true);
     };
 
     const handleUpdateCart = (product: ProductWithQuantity, quantity: number) => {
@@ -231,6 +232,7 @@ const Navbar: React.FC = () => {
                     <LoginRequirer text='You need to log in to access cart.' className='mt-20' />
                 )}
             </aside>
+            <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
         </>
     );
 };

@@ -44,7 +44,7 @@ const ShopPage: React.FC = () => {
     }, []);
 
     return (
-        <div id='ShopPage' className='w-screen'>
+        <div id='ShopPage' className='w-full'>
             <Navbar />
             <div className='h-16 w-full' />
             <h3 className='mt-8 w-full text-center text-3xl font-semibold capitalize text-taupe'>Shop</h3>

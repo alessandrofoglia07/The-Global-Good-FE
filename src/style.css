@@ -27,6 +27,14 @@
     .animate-slide-out {
         animation: slide-out 0.2s ease-in-out forwards;
     }
+
+    .animate-zoom-in-center {
+        animation: zoom-in-center 0.2s forwards;
+    }
+
+    .animate-fade-in {
+        animation: animate-fade-in 0.2s forwards;
+    }
 }
 
 @keyframes slide-in {
@@ -46,5 +54,25 @@
 
     100% {
         transform: translateX(100%);
+    }
+}
+
+@keyframes zoom-in-center {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes animate-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
