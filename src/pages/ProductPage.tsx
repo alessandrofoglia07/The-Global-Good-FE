@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '@/api/axios';
-import { Product, Review } from '@/types';
+import { Product, Review as ReviewT } from '@/types';
 import Navbar from '@/components/Navbar';
 import { toCollectionName } from '@/utils/toCollectionName';
 import useWindowSize from '@/hooks/useWindowSize';
@@ -14,10 +14,10 @@ import { useRecoilState } from 'recoil';
 import RatingButton from '@/components/RatingButton';
 import { reviewSchema } from '@/utils/schemas/reviewSchemas';
 import authAxios from '@/api/authAxios';
-import Rating from '@/components/Rating';
 import { AccountContext } from '@/context/Account';
 import Spinner from '@/components/Spinner';
 import LoginRequirer from '@/components/LoginRequirer';
+import Review from '@/components/Review';
 
 interface WritingReview {
     title: string;
@@ -33,7 +33,7 @@ const ProductPage: React.FC = () => {
     const [cart, setCart] = useRecoilState(cartState);
     const [product, setProduct] = useState<undefined | Product>(undefined);
     const [moreFromCollection, setMoreFromCollection] = useState<undefined | Product[]>(undefined);
-    const [reviews, setReviews] = useState<undefined | Review[]>(undefined);
+    const [reviews, setReviews] = useState<undefined | ReviewT[]>(undefined);
     const [writingReview, setWritingReview] = useState<WritingReview>({
         title: '',
         rating: 5,
@@ -53,7 +53,7 @@ const ProductPage: React.FC = () => {
 
     const fetchReviews = async () => {
         try {
-            const res = await axios.get(`/product/${collection}/${name}/review`);
+            const res = await axios.get(`/reviews/product?name=${name}`);
             setReviews(res.data);
         } catch (err) {
             console.error(err);
@@ -119,7 +119,7 @@ const ProductPage: React.FC = () => {
             }
 
             setErrText(undefined);
-            await authAxios.post(`/product/${collection}/${name}/review`, {
+            await authAxios.post(`/reviews/product?name=${name}&collection=${collection}`, {
                 rating: writingReview.rating,
                 reviewTitle: writingReview.title,
                 reviewText: writingReview.text
@@ -129,13 +129,6 @@ const ProductPage: React.FC = () => {
         } catch (err) {
             console.error(err);
         }
-    };
-
-    const handleShowFullText = (e: React.MouseEvent<HTMLSpanElement>) => {
-        const target = e.target as HTMLSpanElement;
-        target.classList.toggle('overflow-hidden');
-        target.classList.toggle('text-ellipsis');
-        target.classList.toggle('text-nowrap');
     };
 
     return (
@@ -248,22 +241,9 @@ const ProductPage: React.FC = () => {
                     <>
                         <div className='w-full py-8 -md:px-8'>
                             <h2 className='w-full px-8 text-center text-3xl font-bold text-taupe/80'>Our Customers' Thoughts</h2>
-                            <div className='mx-auto mt-16 max-w-[40vw] border-b border-taupe/20 pb-8'>
+                            <div className='mx-auto mt-16 border-b border-taupe/20 pb-8 md:max-w-[40vw]'>
                                 {reviews && reviews.length > 0 ? (
-                                    reviews.map((review) => (
-                                        <div key={review.reviewId} className='mb-4'>
-                                            <h3 className='flex items-center justify-between gap-4 text-lg font-semibold text-taupe'>
-                                                <span className='flex max-w-[calc(3/4*100%)] items-center gap-4'>
-                                                    <span onClick={handleShowFullText} className='cursor-default overflow-hidden text-ellipsis text-nowrap'>
-                                                        {review.reviewTitle}
-                                                    </span>{' '}
-                                                    <Rating rating={review.rating} />
-                                                </span>
-                                                <span className='text-base text-taupe/50'>@{review.username}</span>
-                                            </h3>
-                                            <p className='mt-1 text-lg text-taupe/80'>{review.reviewText}</p>
-                                        </div>
-                                    ))
+                                    reviews.map((review) => <Review key={review.reviewId} review={review} />)
                                 ) : (
                                     <h4 className='pb-8 text-center text-2xl text-taupe'>
                                         No one has already shared their idea on this.

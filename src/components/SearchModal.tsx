@@ -45,7 +45,7 @@ const SearchModal: React.FC<Props> = ({ open, onClose }) => {
                     <div className='mt-4 flex h-full w-full flex-col items-center space-y-4'>
                         {products.map((product) => (
                             <div key={product.name} className='flex min-h-28 w-full items-center gap-8 rounded-lg border border-gray-100 bg-white px-8 py-4 shadow-sm'>
-                                <a className='grid w-2/5 place-items-center lg:w-1/4'>
+                                <a href={`/shop/${product.collection}/${product.name}`} className='grid w-2/5 place-items-center lg:w-1/4'>
                                     <img src={toImgURL(product.img)} alt={product.name} className='max-h-24' />
                                 </a>
                                 <div className='flex h-full w-3/5 flex-col justify-center px-2 lg:w-3/4'>

@@ -13,12 +13,13 @@ export interface Product {
 
 export interface Review {
     productName: string;
+    createdAt: number;
+    productCollection: Collection;
     reviewId: string;
     username: string;
     rating: number;
     reviewTitle: string;
     reviewText: string;
-    timestamp: number;
 }
 
 export interface Filters {
