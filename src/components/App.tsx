@@ -5,11 +5,11 @@ import SignInPage from '@/pages/account/SignInPage';
 import RegisterPage from '@/pages/account/RegisterPage';
 import ConfirmPage from '@/pages/account/ConfirmPage';
 import ProtectedRoutes from './ProtectedRoutes';
-import AboutUsPage from '@/pages/info/AboutUsPage';
 import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
 import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
 import ProductPage from '@/pages/ProductPage';
+import AccountPage from '@/pages/AccountPage';
 
 const App: React.FC = () => {
     return (
@@ -19,7 +19,6 @@ const App: React.FC = () => {
             <Route path='/shop/:collection/:name' element={<ProductPage />} />
 
             {/* Info pages */}
-            <Route path='/info/about-us' element={<AboutUsPage />} />
             <Route path='/info/privacy-policy' element={<PrivacyPolicyPage />} />
             <Route path='/info/terms-conditions' element={<TermsConditionsPage />} />
 
@@ -30,8 +29,7 @@ const App: React.FC = () => {
 
             {/* Protected routes */}
             <Route element={<ProtectedRoutes />}>
-                <Route path='/account' element={<></>} />
-                <Route path='/checkout' element={<></>} />
+                <Route path='/account' element={<AccountPage />} />
             </Route>
 
             <Route path='/product-imgs/*' element={<></>} />
