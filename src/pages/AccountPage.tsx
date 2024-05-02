@@ -6,6 +6,7 @@ import Spinner from '@/components/Spinner';
 import { Review as ReviewT } from '@/types';
 import authAxios from '@/api/authAxios';
 import Review from '@/components/Review';
+import Footer from '@/components/Footer';
 
 interface User {
     'cognito:username': string;
@@ -34,7 +35,7 @@ const AccountPage: React.FC = () => {
     const fetchLatestReviews = async () => {
         try {
             if (!user) return;
-            const res = await authAxios.get(`/reviews/username?username=${user['cognito:username']}`);
+            const res = await authAxios.get(`/reviews/username?username=${user['cognito:username']}&limit=3`);
             setReviews(res.data.reviews);
         } catch (err) {
             console.error(err);
@@ -73,17 +74,22 @@ const AccountPage: React.FC = () => {
                                         reviews.length > 0 ? (
                                             reviews.map((review) => <Review key={review.reviewId} review={review} displayProductLink={true} />)
                                         ) : (
-                                            <p className='text-lg font-normal'>No reviews found</p>
+                                            <p className='mt-2 text-lg font-normal'>No reviews found</p>
                                         )
                                     ) : (
                                         <Spinner className='mx-auto my-8' />
                                     )}
                                 </div>
                             </section>
+                            <section className='mt-8 rounded-lg border border-gray-50 bg-white px-8 py-6 shadow-sm'>
+                                <h2 className='text-2xl font-bold tracking-tight text-taupe'>Latest Orders</h2>
+                                <p className='mt-2 text-lg font-normal'>No orders found</p>
+                            </section>
                         </div>
                     </>
                 )}
             </div>
+            <Footer />
         </div>
     );
 };
