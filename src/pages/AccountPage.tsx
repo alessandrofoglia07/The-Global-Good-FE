@@ -53,8 +53,8 @@ const AccountPage: React.FC = () => {
     return (
         <div className='w-full'>
             <Navbar />
-            <div className='mt-20 h-10 w-full bg-gradient-to-b from-slate-100 to-slate-50' />
-            <div className='h-full min-h-screen w-full bg-slate-50'>
+            <div className='mt-20 h-10 w-full' />
+            <div className='h-full min-h-screen w-full'>
                 {!user ? (
                     <Spinner className='mx-auto py-16' />
                 ) : (

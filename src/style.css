@@ -10,7 +10,7 @@
     }
 
     body {
-        @apply bg-slate-100;
+        @apply bg-slate-50;
         width: 100%;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;

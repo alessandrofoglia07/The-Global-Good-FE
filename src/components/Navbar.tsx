@@ -155,7 +155,7 @@ const Navbar: React.FC = () => {
     return (
         <>
             <nav
-                className={`fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between bg-zinc-100 transition-transform duration-300 ${show ? 'translate-y-0' : '-translate-y-20'}`}>
+                className={`fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between bg-slate-50 transition-transform duration-300 ${show ? 'translate-y-0' : '-translate-y-20'}`}>
                 <div id='left' className='px-4'>
                     <a href='/'>
                         <Logo />
@@ -181,7 +181,7 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
             </nav>
-            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 z-50 h-screen w-full max-w-[30rem] border-l-2 bg-slate-50 pr-4 pt-20 ${!cartOpen && 'hidden'}`}>
+            <aside id='cart-menu' className={`animate-slide-in fixed right-0 top-0 z-50 h-screen w-full max-w-[30rem] border-l-2 bg-white pr-4 pt-20 ${!cartOpen && 'hidden'}`}>
                 <div id='cart-menu-header' className='flex justify-between px-8 pb-4'>
                     <h2 className='text-2xl font-bold tracking-tight text-taupe/80'>Your Cart</h2>
                     <button onClick={handleCartClose} className='grid place-items-center text-4xl text-taupe/80'>
@@ -218,7 +218,7 @@ const Navbar: React.FC = () => {
                                     ))}
                                 </div>
                             </div>
-                            <div id='cart-menu-footer' className='absolute bottom-0 left-0 h-1/4 w-full border-t bg-blue-50 py-8 pl-16 pr-8'>
+                            <div id='cart-menu-footer' className='absolute bottom-0 left-0 h-1/4 w-full border-t bg-slate-100 py-8 pl-16 pr-8'>
                                 <h3 className='text-xl text-taupe'>
                                     <span className='font-semibold'>Subtotal</span>
                                     <span className='float-right font-bold'>$ {cartProducts.reduce((prev, curr) => prev + curr.price * curr.quantity, 0).toFixed(2)}</span>
