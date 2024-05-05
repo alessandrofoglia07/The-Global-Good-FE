@@ -10,6 +10,7 @@ import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
 import ProductPage from '@/pages/ProductPage';
 import AccountPage from '@/pages/AccountPage';
+import BlogPage from '@/pages/BlogPage';
 
 const App: React.FC = () => {
     return (
@@ -17,6 +18,9 @@ const App: React.FC = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/shop' element={<ShopPage />} />
             <Route path='/shop/:collection/:name' element={<ProductPage />} />
+
+            <Route path='/blog' element={<BlogPage />} />
+            <Route path='/blog/:theme/:createdAt' element={<></>} />
 
             {/* Info pages */}
             <Route path='/info/privacy-policy' element={<PrivacyPolicyPage />} />

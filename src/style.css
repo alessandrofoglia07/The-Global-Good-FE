@@ -10,7 +10,7 @@
     }
 
     body {
-        @apply bg-slate-50;
+        background-color: rgb(248 250 252);
         width: 100%;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
@@ -34,6 +34,23 @@
 
     .animate-fade-in {
         animation: animate-fade-in 0.2s forwards;
+    }
+
+    .custom-underline {
+        padding: 30px 0 8px;
+        position: relative;
+    }
+
+    .custom-underline::before {
+        content: "";
+        position: absolute;
+        left: 7%;
+        bottom: 10px;
+        width: 225px;
+        height: 14px;
+        transform: skew(-12deg) translateX(-15%);
+        background-color: rgb(210 180 140);
+        z-index: -1;
     }
 }
 

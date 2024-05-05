@@ -39,3 +39,26 @@ export interface CartItem {
 export interface ProductWithQuantity extends Product {
     quantity: number;
 }
+
+export interface BlogPost {
+    theme: string;
+    createdAt: number;
+    img: string;
+    title: string;
+    content: {
+        custom: false;
+        introduction: string;
+        story: string;
+        fairTradeImpact: string;
+    } | {
+        custom: true;
+        paragraphs: { title: string; content: string; }[];
+    };
+    likes: string[]; // (foreign key)
+    comments: {
+        username: string; // (foreign key)
+        createdAt: number;
+        comment: string;
+    }[];
+    productCollection?: Collection;
+}
