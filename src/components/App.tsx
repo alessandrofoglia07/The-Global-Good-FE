@@ -9,8 +9,9 @@ import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
 import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
 import ProductPage from '@/pages/ProductPage';
-import AccountPage from '@/pages/AccountPage';
-import BlogPage from '@/pages/BlogPage';
+import AccountPage from '@/pages/account/AccountPage';
+import BlogPage from '@/pages/blog/BlogPage';
+import SpecificBlogPage from '@/pages/blog/SpecificBlogPage';
 
 const App: React.FC = () => {
     return (
@@ -20,7 +21,7 @@ const App: React.FC = () => {
             <Route path='/shop/:collection/:name' element={<ProductPage />} />
 
             <Route path='/blog' element={<BlogPage />} />
-            <Route path='/blog/:theme/:createdAt' element={<></>} />
+            <Route path='/blog/:theme/:createdAt' element={<SpecificBlogPage />} />
 
             {/* Info pages */}
             <Route path='/info/privacy-policy' element={<PrivacyPolicyPage />} />

@@ -3,9 +3,13 @@ import Navbar from '@/components/Navbar';
 import axios from '@/api/axios';
 import BlogPost from '@/components/BlogPost';
 import { BlogPost as BlogPostT } from '@/types';
+import Spinner from '@/components/Spinner';
+import { Dialog } from '@headlessui/react';
+import LoginRequirer from '@/components/LoginRequirer';
 
 const BlogPage: React.FC = () => {
-    const [posts, setPosts] = useState<BlogPostT[]>([]);
+    const [posts, setPosts] = useState<BlogPostT[] | undefined>(undefined);
+    const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
 
     const fetchPosts = async () => {
         try {
@@ -28,10 +32,18 @@ const BlogPage: React.FC = () => {
             <h1 className='custom-underline mx-auto mb-8 mt-4 w-max text-6xl font-extrabold tracking-tight text-taupe'>Our Blog</h1>
             <div className='mx-auto my-8 h-px w-3/5 bg-taupe/40' />
             <div className='grid grid-cols-1 gap-8 p-8 px-[5vw] md:grid-cols-2 lg:grid-cols-3'>
-                {posts.map((post) => (
-                    <BlogPost key={post.theme + post.createdAt} blogPost={post} />
-                ))}
+                {posts === undefined ? (
+                    <Spinner className='mx-auto mt-12 md:col-span-2 lg:col-span-3' />
+                ) : (
+                    posts.map((post) => <BlogPost openModal={() => setLoginModalOpen(true)} key={post.theme + post.createdAt} blogPost={post} />)
+                )}
             </div>
+            <Dialog onClose={() => setLoginModalOpen(false)} open={loginModalOpen}>
+                <div className='fixed inset-0 z-[60] bg-black/25' />
+                <Dialog.Panel className='animate-zoom-in-center fixed left-1/2 top-1/2 z-[61] max-h-[90vh] w-full -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-neutral-50 p-8 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]'>
+                    <LoginRequirer text='You need to log in to like this post.' />
+                </Dialog.Panel>
+            </Dialog>
         </div>
     );
 };
