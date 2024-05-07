@@ -13,12 +13,18 @@ interface Props {
 const BlogPost: React.FC<Props> = ({ blogPost, openModal }: Props) => {
     const { getSession } = useContext(AccountContext);
 
-    const [likes, setLikes] = useState<string[]>(blogPost.likes);
+    const [liked, setLiked] = useState<boolean>(blogPost.liked);
+    const [likes, setLikes] = useState<number>(blogPost.likes);
     const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {
         getSession().then((res) => setUsername(res?.getAccessToken().decodePayload().username || null));
     }, []);
+
+    useEffect(() => {
+        setLiked(blogPost.liked);
+        setLikes(blogPost.likes);
+    }, [blogPost.liked]);
 
     const link = `/blog/${blogPost.theme}/${blogPost.createdAt}`;
 
@@ -27,16 +33,16 @@ const BlogPost: React.FC<Props> = ({ blogPost, openModal }: Props) => {
         if (!session) return openModal();
 
         try {
-            const res = await authAxios.patch(`/blog/${blogPost.theme}/${blogPost.createdAt}/like`);
-            if (res.status === 200) {
-                if (username) {
-                    if (likes.includes(username)) {
-                        setLikes((prev) => prev.filter((like) => like !== username));
-                    } else {
-                        setLikes((prev) => [...prev, username]);
-                    }
+            if (username) {
+                if (liked) {
+                    setLiked(false);
+                    setLikes((prev) => prev - 1);
+                } else {
+                    setLiked(true);
+                    setLikes((prev) => prev + 1);
                 }
             }
+            await authAxios.patch(`/blog/${blogPost.theme}/${blogPost.createdAt}/like`);
         } catch (err) {
             console.error(err);
         }
@@ -55,8 +61,8 @@ const BlogPost: React.FC<Props> = ({ blogPost, openModal }: Props) => {
             <p className='mt-2 text-sm text-gray-500'>{new Date(blogPost.createdAt).toDateString()}</p>
             <div className='my-4 flex items-center justify-end gap-4'>
                 <button onClick={handleLikeBtnClick} className='flex items-center gap-2'>
-                    {username && likes.includes(username) ? <FullHeartIcon className='text-xl text-red-500' /> : <EmptyHeartIcon className='text-xl' />}
-                    <span>{likes.length}</span>
+                    {liked ? <FullHeartIcon className='text-xl text-red-500' /> : <EmptyHeartIcon className='text-xl' />}
+                    <span>{likes}</span>
                 </button>
                 <a href={link + '#comment-section'}>
                     <CommentIcon className='text-xl' />

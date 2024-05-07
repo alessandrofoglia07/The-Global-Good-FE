@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '@/components/Navbar';
 import axios from '@/api/axios';
 import BlogPost from '@/components/BlogPost';
@@ -6,14 +6,29 @@ import { BlogPost as BlogPostT } from '@/types';
 import Spinner from '@/components/Spinner';
 import { Dialog } from '@headlessui/react';
 import LoginRequirer from '@/components/LoginRequirer';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { AccountContext } from '@/context/Account';
+import authAxios from '@/api/authAxios';
 
 const BlogPage: React.FC = () => {
+    const { getSession } = useContext(AccountContext);
+
     const [posts, setPosts] = useState<BlogPostT[] | undefined>(undefined);
     const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+    const [session, setSession] = useState<CognitoUserSession | null>(null);
+
+    useEffect(() => {
+        getSession().then((res) => setSession(res));
+    }, []);
 
     const fetchPosts = async () => {
         try {
-            const res = await axios.get('/blog?fullPost=false');
+            let res;
+            if (session) {
+                res = await authAxios.get('/blog?fullPost=false');
+            } else {
+                res = await axios.get('/blog?fullPost=false');
+            }
             setPosts(res.data);
         } catch (err) {
             console.error(err);
@@ -22,7 +37,7 @@ const BlogPage: React.FC = () => {
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [session]);
 
     return (
         <div className='w-full'>
