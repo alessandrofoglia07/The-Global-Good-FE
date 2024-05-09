@@ -18,6 +18,7 @@ import { AccountContext } from '@/context/Account';
 import Spinner from '@/components/Spinner';
 import LoginRequirer from '@/components/LoginRequirer';
 import Review from '@/components/Review';
+import LoginRequirerModal from '@/components/LoginRequirerModal';
 
 interface WritingReview {
     title: string;
@@ -41,6 +42,7 @@ const ProductPage: React.FC = () => {
     });
     const [errText, setErrText] = useState<undefined | string>(undefined);
     const [auth, setAuth] = useState<'loading' | boolean>('loading');
+    const [openLoginModal, setOpenLoginModal] = useState(false);
 
     const fetchProduct = async () => {
         try {
@@ -110,6 +112,9 @@ const ProductPage: React.FC = () => {
 
     const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!auth) return setOpenLoginModal(true);
+
         try {
             const val = reviewSchema.safeParse(writingReview);
 
@@ -246,7 +251,7 @@ const ProductPage: React.FC = () => {
                                     reviews.map((review) => <Review key={review.reviewId} review={review} />)
                                 ) : (
                                     <h4 className='pb-8 text-center text-2xl text-taupe'>
-                                        No one has already shared their idea on this.
+                                        No one has shared their experience yet.
                                         <br /> You can be{' '}
                                         <a className='underline' href='#comment-on-product'>
                                             the first
@@ -314,6 +319,7 @@ const ProductPage: React.FC = () => {
                         )}
                     </div>
                 </div>
+                <LoginRequirerModal open={openLoginModal} onClose={() => setOpenLoginModal(false)} text='You need to log in to submit a review.' />
             </main>
             <Footer />
         </div>

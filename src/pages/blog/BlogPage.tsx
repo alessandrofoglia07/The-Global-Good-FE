@@ -4,11 +4,10 @@ import axios from '@/api/axios';
 import BlogPost from '@/components/BlogPost';
 import { BlogPost as BlogPostT } from '@/types';
 import Spinner from '@/components/Spinner';
-import { Dialog } from '@headlessui/react';
-import LoginRequirer from '@/components/LoginRequirer';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
 import { AccountContext } from '@/context/Account';
 import authAxios from '@/api/authAxios';
+import LoginRequirerModal from '@/components/LoginRequirerModal';
 
 const BlogPage: React.FC = () => {
     const { getSession } = useContext(AccountContext);
@@ -53,12 +52,7 @@ const BlogPage: React.FC = () => {
                     posts.map((post) => <BlogPost openModal={() => setLoginModalOpen(true)} key={post.theme + post.createdAt} blogPost={post} />)
                 )}
             </div>
-            <Dialog onClose={() => setLoginModalOpen(false)} open={loginModalOpen}>
-                <div className='fixed inset-0 z-[60] bg-black/25' />
-                <Dialog.Panel className='animate-zoom-in-center fixed left-1/2 top-1/2 z-[61] max-h-[90vh] w-full -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-neutral-50 p-8 sm:w-[80vw] md:w-[60vw] lg:w-[50vw]'>
-                    <LoginRequirer text='You need to log in to like this post.' />
-                </Dialog.Panel>
-            </Dialog>
+            <LoginRequirerModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} text='You need to log in to like this post.' />
         </div>
     );
 };

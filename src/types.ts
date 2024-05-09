@@ -54,12 +54,17 @@ export interface BlogPost {
         custom: true;
         paragraphs: { title: string; content: string; }[];
     };
-    likes: number; // (foreign key)
+    likes: number;
     liked: boolean;
-    comments: {
-        username: string; // (foreign key)
-        createdAt: number;
-        comment: string;
-    }[];
+    comments: string[]; // (foreign key)
     productCollection?: Collection;
+}
+
+export interface Comment {
+    commentId: string; // partition key
+    createdAt: number; // sort key
+    blogTheme: string; // (foreign key)
+    blogCreatedAt: number; // (foreign key)
+    username: string; // (foreign key)
+    content: string;
 }
