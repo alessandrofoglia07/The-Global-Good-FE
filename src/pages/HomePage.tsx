@@ -93,7 +93,7 @@ const MainPage: React.FC = () => {
                     </Slider>
                 </div>
             </section>
-            <section id='values' className='min-h-[40rem] w-full bg-tan px-8 pt-8'>
+            <section id='values' className='min-h-[40rem] w-full bg-tan/80 px-8 pt-8'>
                 <motion.h1
                     initial={{ translateX: '-50%', scale: 1, opacity: 0 }}
                     whileInView={{
@@ -124,34 +124,52 @@ const MainPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <section id='discover' className='flex aspect-[2/1] h-fit w-full items-center -md:flex-col'>
+            <section id='discover-blog' className='flex aspect-[2/1] h-fit max-h-[80vh] w-full items-center -md:flex-col'>
                 <div className='grid h-fit w-screen place-items-center md:w-1/2'>
-                    <div className='max-w-[100vw] px-8 py-16 lg:p-20 xl:p-32'>
+                    <div className='max-w-[100vw] px-8 py-16 lg:p-20 '>
                         <motion.h2
                             initial={{ translateY: -50, opacity: 0.5 }}
                             whileInView={{ translateY: 0, opacity: 1, transition: { duration: 0.8 } }}
                             viewport={{ once: true }}
                             className='mb-6 text-4xl font-semibold tracking-tight text-taupe'>
-                            Shop at TheGlobalGood and support a more sustainable and equitable world.
+                            <span className='font-bold tracking-tighter'>TheGlobalGood</span> also has a <span className='underline'>blog</span>!
                         </motion.h2>
                         <motion.h3
                             initial={{ opacity: 0.2 }}
                             whileInView={{ opacity: 1, transition: { duration: 0.8, delay: 0.4 } }}
                             viewport={{ once: true }}
                             className='mb-12 text-xl'>
-                            At TheGlobalGood, we believe in connecting you with products that are good for you and good for the planet. We partner with artisans and businesses around
-                            the world who are committed to fair trade practices, sustainable production, and ethical labor.
+                            At TheGlobalGood, we believe in connecting you with products that are good for you and good for the planet. Check out our blog to learn more about our
+                            mission and the impact we are making around the world. We are committed to providing you with the best products and the best information.
                         </motion.h3>
                         <a
-                            href='/shop'
-                            className='max-h-[50rem] rounded-lg border border-taupe bg-tan px-8 py-4 text-xl font-semibold uppercase tracking-wider text-taupe transition-colors hover:bg-darktan'>
-                            Visit our shop
+                            href='/blog'
+                            className='max-h-[50rem] rounded-lg border border-slate-300 bg-tan px-16 py-4 text-xl font-semibold uppercase tracking-wider text-taupe shadow-md transition-colors hover:bg-darktan'>
+                            Our blog
                         </a>
                     </div>
                 </div>
                 <div className='h-full w-1/2 -md:hidden'>
                     <img alt='nature-background' draggable='false' src={NatureBg} className='h-full object-cover brightness-90' />
                 </div>
+            </section>
+            <section id='call-to-action' className='flex w-full flex-col items-center bg-tan/60 px-8 py-24'>
+                <motion.h1
+                    initial={{ scale: 1, opacity: 0 }}
+                    whileInView={{
+                        scale: 1,
+                        opacity: 1,
+                        transition: { duration: 1, delay: 0.3 }
+                    }}
+                    viewport={{ once: true }}
+                    className='w-full pb-4 text-center text-4xl font-bold tracking-tight text-taupe md:pb-8 md:text-5xl'>
+                    Start Shopping Today
+                </motion.h1>
+                <a
+                    href='/blog'
+                    className='max-h-[50rem] rounded-xl border border-slate-300 bg-white px-32 py-8 text-2xl font-bold uppercase tracking-wide text-taupe shadow-md transition-colors hover:bg-zinc-100'>
+                    Shop now
+                </a>
             </section>
             <Footer />
         </div>
