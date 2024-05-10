@@ -166,7 +166,7 @@ const MainPage: React.FC = () => {
                     Start Shopping Today
                 </motion.h1>
                 <a
-                    href='/blog'
+                    href='/shop'
                     className='max-h-[50rem] rounded-xl border border-slate-300 bg-white px-32 py-8 text-2xl font-bold uppercase tracking-wide text-taupe shadow-md transition-colors hover:bg-zinc-100'>
                     Shop now
                 </a>

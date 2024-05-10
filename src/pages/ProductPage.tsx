@@ -19,6 +19,7 @@ import Spinner from '@/components/Spinner';
 import LoginRequirer from '@/components/LoginRequirer';
 import Review from '@/components/Review';
 import LoginRequirerModal from '@/components/LoginRequirerModal';
+import { FaExclamation as Exclamation } from 'react-icons/fa';
 
 interface WritingReview {
     title: string;
@@ -43,6 +44,7 @@ const ProductPage: React.FC = () => {
     const [errText, setErrText] = useState<undefined | string>(undefined);
     const [auth, setAuth] = useState<'loading' | boolean>('loading');
     const [openLoginModal, setOpenLoginModal] = useState(false);
+    const [blogUrl, setBlogUrl] = useState<undefined | string>(undefined);
 
     const fetchProduct = async () => {
         try {
@@ -59,6 +61,18 @@ const ProductPage: React.FC = () => {
             setReviews(res.data);
         } catch (err) {
             console.error(err);
+        }
+    };
+
+    const fetchBlogUrl = async (product: Product | undefined) => {
+        try {
+            if (!product) setBlogUrl(undefined);
+            const res = await axios.get(`/blog?theme=${product?.name}&productCollection=${product?.collection}&fullPost=false`);
+            const url = `/blog/${res.data[0].theme}/${res.data[0].createdAt}`;
+            setBlogUrl(url);
+        } catch (err) {
+            console.error(err);
+            setBlogUrl(undefined);
         }
     };
 
@@ -96,6 +110,10 @@ const ProductPage: React.FC = () => {
         fetchMoreFromCollection();
         fetchReviews();
     }, []);
+
+    useEffect(() => {
+        if (product) fetchBlogUrl(product);
+    }, [product]);
 
     const handleReviewChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -214,6 +232,19 @@ const ProductPage: React.FC = () => {
                                             ))}
                                         </h4>
                                     </section>
+                                    {blogUrl && (
+                                        <section className='mt-6'>
+                                            <h4 className='flex items-center gap-2 text-lg font-semibold text-taupe/80'>
+                                                <Exclamation className='rounded-full text-xl text-darktan' />
+                                                <span>
+                                                    <span>Learn the story about this product in its</span>{' '}
+                                                    <a className='underline' href={blogUrl}>
+                                                        <span>blog page!</span>
+                                                    </a>
+                                                </span>
+                                            </h4>
+                                        </section>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -238,6 +269,19 @@ const ProductPage: React.FC = () => {
                                     ))}
                                 </h4>
                             </section>
+                            {blogUrl && (
+                                <section className='mt-6'>
+                                    <h4 className='flex items-center gap-2 text-lg font-semibold text-taupe/80'>
+                                        <Exclamation className='rounded-full text-xl text-darktan' />
+                                        <span>
+                                            <span>Learn the story about this product in its</span>{' '}
+                                            <a className='underline' href={blogUrl}>
+                                                <span>blog page!</span>
+                                            </a>
+                                        </span>
+                                    </h4>
+                                </section>
+                            )}
                         </div>
                     )}
                 </div>
