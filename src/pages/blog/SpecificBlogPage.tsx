@@ -108,7 +108,7 @@ const SpecificBlogPage: React.FC = () => {
         <div>
             <Navbar />
             <div className='h-20 w-full' />
-            <main className='mx-auto mb-32 mt-8 flex max-w-[50rem] flex-col items-center'>
+            <main className='mx-auto mb-32 mt-8 flex max-w-[50rem] flex-col items-center px-8'>
                 <h2 className='text-2xl font-bold text-taupe'>{theme}</h2>
                 {blogPost ? (
                     <div className='flex flex-col'>
@@ -157,7 +157,7 @@ const SpecificBlogPage: React.FC = () => {
                         </div>
                         <h2 className='my-8 text-3xl font-bold text-taupe'>Comments</h2>
                         {comments && comments.length > 0 ? (
-                            comments.map((comment) => <Comment key={comment.commentId} comment={comment} />)
+                            comments.map((comment, i) => <Comment comment={comment} key={i} />)
                         ) : (
                             <h4 className='py-16 text-center text-2xl text-taupe'>
                                 No one has already shared their idea on this.

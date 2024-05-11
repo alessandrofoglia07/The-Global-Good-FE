@@ -68,6 +68,7 @@ const ProductPage: React.FC = () => {
         try {
             if (!product) setBlogUrl(undefined);
             const res = await axios.get(`/blog?theme=${product?.name}&productCollection=${product?.collection}&fullPost=false`);
+            if (res.data.length === 0) return setBlogUrl(undefined);
             const url = `/blog/${res.data[0].theme}/${res.data[0].createdAt}`;
             setBlogUrl(url);
         } catch (err) {
