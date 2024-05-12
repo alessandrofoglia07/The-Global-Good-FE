@@ -67,8 +67,8 @@ const MainPage: React.FC = () => {
                 <img alt='nature-background' draggable='false' src={PeopleBg} className='absolute left-0 top-0 h-full w-[100vw] object-cover brightness-[0.6]' />
                 <div className='absolute left-1/2 top-1/2 flex h-max max-h-full -translate-x-1/2 -translate-y-1/2 flex-col items-center px-2 pb-20 -md:w-full -lg:w-3/4'>
                     <h1 className='pb-8 text-center text-5xl font-bold tracking-tight text-slate-100 md:text-6xl lg:text-7xl'>Beyond Shopping.</h1>
-                    <h1 className='text-center text-5xl font-bold tracking-tight text-slate-100 md:text-6xl lg:text-7xl'>Fair Trade Products that Make a Difference</h1>
-                    <a href='/shop' className='mt-12 rounded-lg bg-slate-100 px-8 py-4 text-center text-2xl uppercase tracking-wider transition-colors hover:bg-slate-200'>
+                    <h1 className='text-center text-5xl font-bold tracking-tight text-slate-100 md:text-6xl lg:text-7xl'>Ethical Trade Products that Make a Difference</h1>
+                    <a href='/shop' className='mt-12 rounded-lg bg-slate-100 px-16 py-4 text-center text-2xl uppercase tracking-wider transition-colors hover:bg-slate-200'>
                         Shop now
                     </a>
                 </div>
@@ -167,7 +167,7 @@ const MainPage: React.FC = () => {
                 </motion.h1>
                 <a
                     href='/shop'
-                    className='max-h-[50rem] rounded-xl border border-slate-300 bg-white px-32 py-8 text-2xl font-bold uppercase tracking-wide text-taupe shadow-md transition-colors hover:bg-zinc-100'>
+                    className='max-h-[50rem] max-w-[90vw] rounded-xl border border-slate-300 bg-white px-16 py-8 text-2xl font-bold uppercase tracking-wide text-taupe shadow-md transition-colors hover:bg-zinc-100 md:px-32'>
                     Shop now
                 </a>
             </section>

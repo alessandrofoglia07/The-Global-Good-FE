@@ -144,7 +144,7 @@ const ProductPage: React.FC = () => {
 
             setErrText(undefined);
             await authAxios.post(`/reviews/product?name=${name}&collection=${collection}`, {
-                rating: writingReview.rating,
+                rating: writingReview.rating === 5 ? writingReview.rating : writingReview.rating + 1,
                 reviewTitle: writingReview.title,
                 reviewText: writingReview.text
             });
@@ -291,7 +291,7 @@ const ProductPage: React.FC = () => {
                     <>
                         <div className='w-full py-8 -md:px-8'>
                             <h2 className='w-full px-8 text-center text-3xl font-bold text-taupe/80'>Our Customers' Thoughts</h2>
-                            <div className='mx-auto mt-16 border-b border-taupe/20 pb-8 md:max-w-[40vw]'>
+                            <div className='mx-auto mt-16 border-b border-taupe/20 pb-8 md:max-w-[60vw]'>
                                 {reviews && reviews.length > 0 ? (
                                     reviews.map((review) => <Review key={review.reviewId} review={review} />)
                                 ) : (

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-export const UsernameSchema = z.string().min(3, 'Username must be at least 3 characters long.');
+export const UsernameSchema = z.string()
+    .min(3, 'Username must be at least 3 characters long.')
+    .refine((value) => /^[\p{L}\p{M}\p{S}\p{N}\p{P}]+$/u.test(value), {
+        message: 'Username can only contain letters, numbers, and symbols.',
+    });
 
 export const EmailSchema = z.string().email().min(1, 'Email is required.');
 
