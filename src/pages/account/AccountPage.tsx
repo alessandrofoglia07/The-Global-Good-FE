@@ -15,7 +15,7 @@ interface User {
 }
 
 const AccountPage: React.FC = () => {
-    const { getSession } = useContext(AccountContext);
+    const { getSession, logout } = useContext(AccountContext);
     const navigate = useNavigate();
 
     const [user, setUser] = useState<User | undefined>(undefined);
@@ -40,6 +40,11 @@ const AccountPage: React.FC = () => {
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const handleSignOut = () => {
+        logout();
+        navigate('/account/signin');
     };
 
     useEffect(() => {
@@ -84,6 +89,11 @@ const AccountPage: React.FC = () => {
                             <section className='mt-8 rounded-lg border border-gray-50 bg-white px-8 py-6 shadow-sm'>
                                 <h2 className='text-2xl font-bold tracking-tight text-taupe'>Latest Orders</h2>
                                 <p className='mt-2 text-lg font-normal'>No orders found</p>
+                            </section>
+                            <section className='mb-16 mt-8 rounded-lg border border-gray-50 bg-white px-8 py-6 shadow-sm'>
+                                <button onClick={handleSignOut} className='text-lg font-semibold text-taupe'>
+                                    Sign Out
+                                </button>
                             </section>
                         </div>
                     </>
