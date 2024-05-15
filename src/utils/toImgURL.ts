@@ -16,13 +16,13 @@ export const toImgURL = (img: string, general: boolean = false) => {
             return img;
         }
         if (import.meta.env.PROD) {
-            return `product-imgs/${img}`;
+            return `/product-imgs/${img}`;
         } else {
             return `${import.meta.env.VITE_PROD_BASE_URL}/product-imgs/${img}`;
         }
     }
     if (import.meta.env.PROD) {
-        return `product-imgs/${img}`;
+        return `/product-imgs/${img}`;
     } else {
         return `${import.meta.env.VITE_PROD_BASE_URL}/product-imgs/${img}`;
     }
