@@ -5,8 +5,6 @@ import SignInPage from '@/pages/account/SignInPage';
 import RegisterPage from '@/pages/account/RegisterPage';
 import ConfirmPage from '@/pages/account/ConfirmPage';
 import ProtectedRoutes from './ProtectedRoutes';
-import PrivacyPolicyPage from '@/pages/info/PrivacyPolicyPage';
-import TermsConditionsPage from '@/pages/info/TermsConditionsPage';
 import ShopPage from '@/pages/ShopPage';
 import ProductPage from '@/pages/ProductPage';
 import AccountPage from '@/pages/account/AccountPage';
@@ -22,10 +20,6 @@ const App: React.FC = () => {
 
             <Route path='/blog' element={<BlogPage />} />
             <Route path='/blog/:theme/:createdAt' element={<SpecificBlogPage />} />
-
-            {/* Info pages */}
-            <Route path='/info/privacy-policy' element={<PrivacyPolicyPage />} />
-            <Route path='/info/terms-conditions' element={<TermsConditionsPage />} />
 
             {/* Account routes */}
             <Route path='/account/signin' element={<SignInPage />} />
