@@ -6,17 +6,18 @@ interface Props {
     alt: string;
     className?: string;
     containerClassName?: string;
+    spinnerClassName?: string;
 }
 
-const LoadingImg: React.FC<Props> = ({ src, alt, className, containerClassName }: Props) => {
+const LoadingImg: React.FC<Props> = ({ src, alt, className, containerClassName, spinnerClassName }: Props) => {
     const [loading, setLoading] = useState(true);
 
     return (
         <>
-            <div className={loading ? 'block' : 'hidden'}>
+            <div className={(loading ? 'block' : 'hidden') + ' ' + spinnerClassName}>
                 <Spinner />
             </div>
-            <div className={loading ? 'hidden' : `block` + ' h-min ' + containerClassName}>
+            <div className={(loading ? 'hidden' : `block`) + ' h-min ' + containerClassName}>
                 <img draggable='false' className={className} src={src} alt={alt} onLoad={() => setLoading(false)} />
             </div>
         </>
