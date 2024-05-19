@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from '@/api/axios';
 import { Product } from '@/types';
 import { toImgURL } from '@/utils/toImgURL';
 import { toCollectionName } from '@/utils/toCollectionName';
 import { Dialog } from '@headlessui/react';
+import useDebounce from '@/hooks/useDebounce';
 
 interface Props {
     open: boolean;
@@ -14,19 +15,24 @@ const SearchModal: React.FC<Props> = ({ open, onClose }) => {
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState<Product[]>([]);
 
-    const fetchProducts = async (val?: string) => {
+    const debouncedSearch = useDebounce(search, 300);
+
+    const fetchProducts = async (q: string) => {
         try {
-            if (!val && search) return setProducts([]);
-            const res = await axios.get(`/products/search?q=${val || search}`);
+            if (!q) return setProducts([]);
+            const res = await axios.get(`/products/search?q=${q}`);
             setProducts(res.data.products.slice(0, 4));
         } catch (error) {
             console.error(error);
         }
     };
 
+    useEffect(() => {
+        fetchProducts(debouncedSearch);
+    }, [debouncedSearch]);
+
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        fetchProducts(e.target.value);
     };
 
     return (

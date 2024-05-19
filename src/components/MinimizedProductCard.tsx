@@ -33,7 +33,9 @@ const MinimizedProductCard: React.FC<Props> = ({ product, setProducts, handleUpd
 
     return (
         <>
-            <img src={toImgURL(product.img)} alt={product.name} className='w-2/3' />
+            <a href={`/shop/${product.collection}/${product.name}`} className='w-2/3'>
+                <img src={toImgURL(product.img)} alt={product.name} className='w-full' />
+            </a>
             <div className='flex items-center gap-2'>
                 <div className='flex h-full w-full flex-col justify-center px-2'>
                     <a href={`/shop/${product.collection}/${product.name}`} className='h-min text-lg font-bold tracking-tight'>
