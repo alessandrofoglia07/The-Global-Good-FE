@@ -65,10 +65,10 @@ const MainPage: React.FC = () => {
             <Navbar />
             <section id='landing' className='relative mt-20 h-[80vh] w-full'>
                 <img alt='nature-background' draggable='false' src={PeopleBg} className='absolute left-0 top-0 h-full w-[100vw] object-cover brightness-[0.6]' />
-                <div className='absolute left-1/2 top-1/2 flex h-max max-h-full -translate-x-1/2 -translate-y-1/2 flex-col items-center px-2 pb-20 -md:w-full -lg:w-3/4'>
+                <div className='absolute left-1/2 top-1/2 flex h-max max-h-full -translate-x-1/2 -translate-y-1/2 flex-col items-center px-2 pb-20 -md:w-full -md:pt-8 -lg:w-3/4'>
                     <h1 className='pb-8 text-center text-5xl font-bold tracking-tight text-slate-100 md:text-6xl lg:text-7xl'>Beyond Shopping.</h1>
-                    <h1 className='text-center text-5xl font-bold tracking-tight text-slate-100 md:text-6xl lg:text-7xl'>Ethical Trade Products that Make a Difference</h1>
-                    <a href='/shop' className='mt-12 rounded-lg bg-slate-100 px-16 py-4 text-center text-2xl uppercase tracking-wider transition-colors hover:bg-slate-200'>
+                    <h1 className='text-center text-4xl font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl'>Ethical Trade Products that Make a Difference</h1>
+                    <a href='/shop' className='mt-12 rounded-lg bg-slate-100 px-8 py-4 text-center text-2xl uppercase tracking-wider transition-colors hover:bg-slate-200 md:px-16'>
                         Shop now
                     </a>
                 </div>
