@@ -72,7 +72,7 @@ const ShopPage: React.FC = () => {
             </div>
             <Footer />
             {filterOpen && (
-                <aside className='animate-slide-in fixed top-0 h-screen w-full bg-slate-100 px-8 pt-20'>
+                <aside className='animate-slide-in fixed top-0 h-screen w-full bg-slate-100 pt-20'>
                     <FiltersSelector searchParams={searchParams} setSearchParams={setSearchParams} filters={filters} setFilters={setFilters} setFiltersOpen={setFilterOpen} />
                 </aside>
             )}

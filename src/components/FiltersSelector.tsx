@@ -123,11 +123,11 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
     };
 
     return (
-        <>
+        <div className='max-h-full overflow-y-scroll px-8 pb-20'>
             {w > 768 ? (
                 <h2 className='select-none pb-4 text-xl font-extrabold uppercase tracking-tight text-darktan/90'>Filters</h2>
             ) : (
-                <div className='flex h-min w-full items-center justify-between pb-4'>
+                <div className='flex h-min w-full items-center justify-between py-4'>
                     <h2 className='select-none text-xl font-extrabold uppercase tracking-tight text-darktan/90'>Filters</h2>
                     <button onClick={() => setFiltersOpen((prev) => !prev)} className='grid place-items-center text-4xl text-darktan'>
                         <XIcon />
@@ -192,7 +192,7 @@ const FiltersSelector: React.FC<Props> = ({ searchParams, setSearchParams, filte
                     </div>
                 </li>
             </ul>
-        </>
+        </div>
     );
 };
 
