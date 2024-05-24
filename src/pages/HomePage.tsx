@@ -124,7 +124,7 @@ const MainPage: React.FC = () => {
                     ))}
                 </div>
             </section>
-            <section id='discover-blog' className='flex aspect-[2/1] h-fit max-h-[80vh] w-full items-center -md:flex-col'>
+            <section id='discover-blog' className='flex aspect-[2/1] h-[80vh] w-full items-center md:h-fit md:max-h-[80vh] -md:flex-col'>
                 <div className='grid h-fit w-screen place-items-center md:w-1/2'>
                     <div className='max-w-[100vw] px-8 py-16 lg:p-20 '>
                         <motion.h2
