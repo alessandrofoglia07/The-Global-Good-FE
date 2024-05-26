@@ -45,15 +45,17 @@ export interface BlogPost {
     createdAt: number;
     img: string;
     title: string;
-    content: {
-        custom: false;
-        introduction: string;
-        story: string;
-        fairTradeImpact: string;
-    } | {
-        custom: true;
-        paragraphs: { title: string; content: string; }[];
-    };
+    content:
+        | {
+              custom: false;
+              introduction: string;
+              story: string;
+              fairTradeImpact: string;
+          }
+        | {
+              custom: true;
+              paragraphs: { title: string; content: string }[];
+          };
     likes: number;
     liked: boolean;
     comments: string[]; // (foreign key)

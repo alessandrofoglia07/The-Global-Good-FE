@@ -12,8 +12,7 @@ export const values: Value[] = [
     {
         icon: HandShakeIcon,
         title: 'People over Profit',
-        description:
-            'We ensure fair wages, safe working conditions, and empower communities through sustainable trade practices.'
+        description: 'We ensure fair wages, safe working conditions, and empower communities through sustainable trade practices.'
     },
     {
         icon: RecycleIcon,
@@ -23,8 +22,7 @@ export const values: Value[] = [
     {
         icon: HammerIcon,
         title: 'Global Craftsmanship',
-        description:
-            'We offer a curated selection of handcrafted goods that tell a story and promote cultural heritage.'
+        description: 'We offer a curated selection of handcrafted goods that tell a story and promote cultural heritage.'
     },
     {
         icon: LightBulbIcon,

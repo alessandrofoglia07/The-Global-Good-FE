@@ -1,4 +1,4 @@
-import { CognitoUserPool } from "amazon-cognito-identity-js";
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 
 const UserPoolId = import.meta.env.VITE_AWS_USER_POOL_ID;
 const ClientId = import.meta.env.VITE_AWS_POOL_CLIENT_ID;

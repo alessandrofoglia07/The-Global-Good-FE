@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useContext } from "react";
-import { AccountContext } from "@/context/Account";
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useContext } from 'react';
+import { AccountContext } from '@/context/Account';
 
 const useRedirectToAccount = () => {
     const navigate = useNavigate();
