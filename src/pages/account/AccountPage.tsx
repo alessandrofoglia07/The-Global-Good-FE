@@ -67,9 +67,9 @@ const AccountPage: React.FC = () => {
                         <div className='relative left-1/2 flex h-max w-screen max-w-4xl -translate-x-1/2 flex-col'>
                             <h1 className='text-left text-4xl font-bold tracking-tight text-taupe -md:px-6'>Welcome {user['cognito:username'] || 'User'}</h1>
                             <section className='mt-8 grid space-y-4 rounded-lg border border-gray-50 bg-white px-8 py-6 shadow-sm *:text-left *:tracking-tight *:text-taupe md:grid-cols-2'>
-                                <h3 className='text-xl font-bold tracking-tight '>Email</h3>
+                                <h2 className='text-xl font-bold tracking-tight '>Email</h2>
                                 <p className='text-lg font-normal'>{user.email}</p>
-                                <h3 className='text-xl font-bold'>Email Verified</h3>
+                                <h2 className='text-xl font-bold'>Email Verified</h2>
                                 <p className='text-lg font-normal'>{user.email_verified ? 'Yes' : 'No'}</p>
                             </section>
                             <section className='mt-8 rounded-lg border border-gray-50 bg-white px-8 py-6 shadow-sm'>
