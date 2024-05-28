@@ -31,7 +31,7 @@ const App: React.FC = () => {
                 <Route path='/account' element={<AccountPage />} />
             </Route>
 
-            <Route path='/product-imgs/*' element={<></>} />
+            <Route path='/product-imgs/*' element={null} />
 
             <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
