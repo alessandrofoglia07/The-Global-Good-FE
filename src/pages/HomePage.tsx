@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { Product } from '@/types';
 import axios from '@/api/axios';
 import ProductCard from '@/components/ProductCard';
+import { Helmet } from 'react-helmet';
 
 const MainPage: React.FC = () => {
     const [bestSellers, setBestSellers] = useState<Product[] | undefined[]>(Array(8).fill(undefined));
@@ -62,6 +63,12 @@ const MainPage: React.FC = () => {
 
     return (
         <div id='MainPage' className='flex flex-col items-center'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='TheGlobalGood is an online store that offers a wide range of ethical trade products. We believe in connecting you with products that are good for you and good for the planet.'
+                />
+            </Helmet>
             <Navbar />
             <section id='landing' className='relative mt-20 h-[80vh] w-full'>
                 <img alt='nature-background' draggable='false' src={PeopleBg} className='absolute left-0 top-0 h-full w-[100vw] object-cover brightness-[0.6]' />
