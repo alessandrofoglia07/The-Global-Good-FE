@@ -20,6 +20,7 @@ import LoginRequirer from '@/components/LoginRequirer';
 import Review from '@/components/Review';
 import LoginRequirerModal from '@/components/LoginRequirerModal';
 import { FaExclamation as Exclamation } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 
 interface WritingReview {
     title: string;
@@ -157,6 +158,12 @@ const ProductPage: React.FC = () => {
 
     return (
         <div id='ProductPage'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content={`TheGlobalGood is an online store that offers a wide range of ethical trade products. ${product?.name || name} is a product from the ${product?.collection || collection} collection.`}
+                />
+            </Helmet>
             <Navbar />
             <div className='h-16 w-full' />
             <h4 className='mt-8 w-full px-8 font-semibold capitalize text-taupe/60'>

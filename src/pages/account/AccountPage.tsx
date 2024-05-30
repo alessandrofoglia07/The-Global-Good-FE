@@ -7,6 +7,7 @@ import { Review as ReviewT } from '@/types';
 import authAxios from '@/api/authAxios';
 import Review from '@/components/Review';
 import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet';
 
 interface User {
     'cognito:username': string;
@@ -57,6 +58,12 @@ const AccountPage: React.FC = () => {
 
     return (
         <div className='w-full'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='Sign in to TheGlobalGood to access your account, view your orders, and manage your personal information. We believe in connecting you with products that are good for you and good for the planet.'
+                />
+            </Helmet>
             <Navbar />
             <div className='mt-20 h-10 w-full' />
             <div className='h-full min-h-screen w-full'>

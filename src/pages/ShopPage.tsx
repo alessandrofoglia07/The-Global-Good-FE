@@ -8,6 +8,7 @@ import axios from '@/api/axios';
 import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
 import Spinner from '@/components/Spinner';
+import { Helmet } from 'react-helmet';
 
 const ShopPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -45,6 +46,12 @@ const ShopPage: React.FC = () => {
 
     return (
         <div id='ShopPage' className='w-full'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='TheGlobalGood is an online store that offers a wide range of ethical trade products. We believe in connecting you with products that are good for you and good for the planet. Shop our collection of eco-friendly, sustainable, and fair trade products.'
+                />
+            </Helmet>
             <Navbar />
             <div className='h-16 w-full' />
             <h3 className='mt-8 w-full text-center text-3xl font-semibold capitalize text-taupe'>Shop</h3>

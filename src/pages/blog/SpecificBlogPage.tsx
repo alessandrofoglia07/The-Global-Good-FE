@@ -13,6 +13,7 @@ import Comment from '@/components/Comment';
 import LoginRequirerModal from '@/components/LoginRequirerModal';
 import { commentSchema } from '@/utils/schemas/commentSchema';
 import axios from '@/api/axios';
+import { Helmet } from 'react-helmet';
 
 const SpecificBlogPage: React.FC = () => {
     const { theme, createdAt } = useParams<{ theme: string; createdAt: string }>();
@@ -106,6 +107,12 @@ const SpecificBlogPage: React.FC = () => {
 
     return (
         <div>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='TheGlobalGood blog is a place where we share our thoughts, ideas, and stories about our products, our mission, and our impact. Read our blog to learn more about our products, our artisans, and our mission.'
+                />
+            </Helmet>
             <Navbar />
             <div className='h-20 w-full' />
             <main className='mx-auto mb-32 mt-8 flex max-w-[50rem] flex-col items-center px-8'>

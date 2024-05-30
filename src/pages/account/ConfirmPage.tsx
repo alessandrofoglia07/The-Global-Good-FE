@@ -6,6 +6,7 @@ import Logo from '@/components/Logo';
 import Navbar from '@/components/Navbar';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
 import useRedirectToAccount from '@/hooks/useRedirectToAccount';
+import { Helmet } from 'react-helmet';
 
 const ConfirmPage = () => {
     const navigate = useNavigate();
@@ -65,6 +66,9 @@ const ConfirmPage = () => {
 
     return (
         <div className='grid h-full w-full place-items-center'>
+            <Helmet>
+                <meta name='description' content='Verify your email address to complete your account registration. Check your email for the confirmation code.' />
+            </Helmet>
             <Navbar />
             <div className='mt-20 h-10 w-full bg-gradient-to-b from-slate-100 to-slate-50' />
             <section className='relative h-[calc(100vh-7.5rem)] w-full bg-slate-50'>

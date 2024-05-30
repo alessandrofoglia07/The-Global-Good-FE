@@ -8,6 +8,7 @@ import { LuEye as ShowPassIcon, LuEyeOff as HidePassIcon } from 'react-icons/lu'
 import { UsernameSchema, EmailSchema, PasswordSchema } from '@/utils/schemas/authSchemas';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
 import useRedirectToAccount from '@/hooks/useRedirectToAccount';
+import { Helmet } from 'react-helmet';
 
 interface Form {
     username: string;
@@ -79,6 +80,12 @@ const RegisterPage = () => {
 
     return (
         <div className='grid h-full w-full place-items-center'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='Register for TheGlobalGood to access your account, view your orders, and manage your personal information. We believe in connecting you with products that are good for you and good for the planet.'
+                />
+            </Helmet>
             <Navbar />
             <div className='mt-20 h-10 w-full bg-gradient-to-b from-slate-100 to-slate-50' />
             <section className='relative h-[calc(100vh-7.5rem)] w-full bg-slate-50'>

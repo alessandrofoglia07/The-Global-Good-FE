@@ -9,6 +9,7 @@ import { AccountContext } from '@/context/Account';
 import authAxios from '@/api/authAxios';
 import LoginRequirerModal from '@/components/LoginRequirerModal';
 import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet';
 
 const BlogPage: React.FC = () => {
     const { getSession } = useContext(AccountContext);
@@ -41,6 +42,12 @@ const BlogPage: React.FC = () => {
 
     return (
         <div className='w-full'>
+            <Helmet>
+                <meta
+                    name='description'
+                    content='TheGlobalGood blog is a place where we share our thoughts on sustainability, fair trade, and ethical living. We believe in connecting you with products that are good for you and good for the planet.'
+                />
+            </Helmet>
             <Navbar />
             <div className='h-16 w-full' />
             <h1 className='mt-8 w-full text-center text-5xl font-extrabold tracking-tighter text-taupe'>TheGlobalGood</h1>
