@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import formatErrMsg from '@/utils/addDotAtStringEnd';
 import useRedirectToAccount from '@/hooks/useRedirectToAccount';
 import { Helmet } from 'react-helmet';
+import { ConfirmCodeSchema } from '@/utils/schemas/authSchemas';
 
 const ConfirmPage = () => {
     const navigate = useNavigate();
@@ -23,6 +24,11 @@ const ConfirmPage = () => {
 
     const handleConfirm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const confirmCodeResult = ConfirmCodeSchema.safeParse(code);
+        if (!confirmCodeResult.success) {
+            return setErrMsg(confirmCodeResult.error.errors[0]?.message || 'Invalid confirmation code.');
+        }
 
         const username = searchParams.get('username');
         if (!username) {

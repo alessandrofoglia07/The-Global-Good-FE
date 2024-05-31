@@ -21,3 +21,5 @@ export const PasswordSchema = z
     .refine((val) => {
         return val.match(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/);
     }, 'Password must contain at least one special character.');
+
+export const ConfirmCodeSchema = z.string().min(6, 'Confirmation code must be 6 characters long.');
