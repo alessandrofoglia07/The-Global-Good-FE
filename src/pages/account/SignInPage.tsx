@@ -8,6 +8,7 @@ import formatErrMsg from '@/utils/addDotAtStringEnd';
 import useRedirectToAccount from '@/hooks/useRedirectToAccount';
 import Checkbox from '@/components/Checkbox';
 import { Helmet } from 'react-helmet';
+import { PasswordSchema } from '@/utils/schemas/authSchemas';
 
 interface Form {
     usernameOrEmail: string;
@@ -34,6 +35,11 @@ const SignInPage = () => {
 
     const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const passwordResult = PasswordSchema.safeParse(form.password);
+        if (!passwordResult.success) {
+            return setErrMsg('Invalid password.');
+        }
 
         try {
             await authenticate(form.usernameOrEmail, form.password, form.rememberMe ? localStorage : sessionStorage);
